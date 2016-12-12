@@ -1,0 +1,20 @@
+﻿AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: A starter AWS Lambda function.
+Resources:
+  helloworldfunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs4.3
+      CodeUri: .
+      Description: A starter AWS Lambda function.
+      MemorySize: 128
+      Timeout: 3
+      Role: 'arn:aws:iam::038066551854:role/service-role/hello-world-role'
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /hello-world-function
+            Method: ANY
