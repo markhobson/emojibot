@@ -6,9 +6,13 @@ provider:
   runtime: nodejs4.3
 
 functions:
+  install:
+    handler: handler.install
+    environment:
+      CLIENT_ID: ${env:CLIENT_ID}
+    events:
+      - http: GET install
   hello:
     handler: handler.hello
     events:
-      - http:
-          path: hello
-          method: post
+      - http: POST hello
