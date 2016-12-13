@@ -4,7 +4,15 @@ Learning AWS Lambda on Node.js.
 
 ## Getting started
 
-* Install the [AWS CLI]([https://aws.amazon.com/cli/) and set your credentials with `aws configure`
-* Import the AWS Lambda in `aws/`
-* Install the dependencies: `npm install`
-* Invoke it: `npm start`
+* Install [Serverless]([https://serverless.com/) and set your AWS credentials:
+	```
+	serverless config credentials --provider aws --key YOURKEY --secret YOURSECRET
+	```
+* Deploy the AWS Lambda:
+	```
+	cd hello-lambda && serverless deploy
+	```
+* Run the client:
+	```
+	cd client && npm install && npm start
+	```
