@@ -19,6 +19,7 @@ service: aws-nodejs # NOTE: update this with your service name
 
 provider:
   name: aws
+  region: eu-west-1
   runtime: nodejs4.3
 
 # you can overwrite defaults here
