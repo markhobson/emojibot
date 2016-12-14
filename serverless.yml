@@ -18,17 +18,17 @@ functions:
       CLIENT_ID: ${env:CLIENT_ID}
     events:
       - http: GET install
-  thanks:
-    handler: handler.thanks
+  authorized:
+    handler: handler.authorized
     environment:
       CLIENT_ID: ${env:CLIENT_ID}
       CLIENT_SECRET: ${env:CLIENT_SECRET}
     events:
-      - http: GET thanks
-  hello:
-    handler: handler.hello
+      - http: GET authorized
+  event:
+    handler: handler.event
     events:
-      - http: POST hello
+      - http: POST event
 
 resources:
   Resources:

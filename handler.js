@@ -31,7 +31,7 @@ module.exports.install = (event, context, callback) => {
 	});
 };
 
-module.exports.thanks = (event, context, callback) => {
+module.exports.authorized = (event, context, callback) => {
 	const code = event.queryStringParameters.code;
 	
 	https.get(`https://slack.com/api/oauth.access?client_id=${client.id}&client_secret=${client.secret}&code=${code}`, response => {
@@ -73,7 +73,7 @@ module.exports.thanks = (event, context, callback) => {
 	});
 };
 
-module.exports.hello = (event, context, callback) => {
+module.exports.event = (event, context, callback) => {
 	const jsonBody = JSON.parse(event.body);
 	var response;
 	
