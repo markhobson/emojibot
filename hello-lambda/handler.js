@@ -2,11 +2,12 @@
 
 const https = require('https');
 const AWS = require('aws-sdk');
+const WebClient = require('@slack/client').WebClient;
 
 const client = {
 	id: process.env.CLIENT_ID,
 	secret: process.env.CLIENT_SECRET
-}
+};
 const accessTokenTableName = 'accessTokenTable';
 
 module.exports.install = (event, context, callback) => {
@@ -101,8 +102,7 @@ module.exports.hello = (event, context, callback) => {
 					console.log(`Error retrieving OAuth access token: ${error}`);
 					return;
 				}
-				const botAccessToken = result.Item.botAccessToken;
-				handleEvent(jsonBody.event, botAccessToken);
+				handleEvent(jsonBody.event, result.Item.botAccessToken);
 			});
 			response = {
 				statusCode: 200
@@ -118,6 +118,20 @@ module.exports.hello = (event, context, callback) => {
 	callback(null, response);
 };
 
-const handleEvent = (event, accessToken) => {
-	console.log(`event=${JSON.stringify(event)} hasAccessToken=${accessToken !== undefined}`);
+const handleEvent = (event, token) => {
+	const web = new WebClient(token);
+	
+	switch (event.type) {
+		case 'message':
+			// ignore ourselves
+			if (event.subtype && event.subtype === 'bot_message') {
+				break;
+			}
+			web.chat.postMessage(event.channel, 'Hello there!', function(error, result) {
+				if (error) {
+					console.log(`Error posting Slack message: ${error}`);
+				}
+			});
+			break;
+	}
 };
