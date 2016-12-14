@@ -74,9 +74,22 @@ const handleEvent = (event, token) => {
 			if (event.subtype && event.subtype === 'bot_message') {
 				break;
 			}
-			const reply = emoji[event.text] ? `:${event.text}:` : 'Sorry, I\'ve run out of emojis. :(';
+			const reply = handleMessage(event.text);
 			web.chat.postMessage(event.channel, reply)
 				.catch(error => console.log(`Error posting Slack message: ${error}`));
 			break;
 	}
+};
+
+const handleMessage = text => {
+	const replies = text.match(/\w{2,}/g)
+		.map(word => word.toLowerCase())
+		.filter(word => emoji[word])
+		.map(word => `:${word}:`);
+	
+	if (replies.length === 0) {
+		return 'I have nothing.';
+	}
+	
+	return replies[Math.floor(Math.random() * replies.length)];
 };
