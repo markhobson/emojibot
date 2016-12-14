@@ -42,32 +42,23 @@ module.exports.authorized = (event, context, callback) => {
 
 module.exports.event = (event, context, callback) => {
 	const jsonBody = JSON.parse(event.body);
-	var response;
+	const response = {
+		statusCode: 200
+	};
 	
 	switch (jsonBody.type) {
 		case 'url_verification':
-			response = {
-				statusCode: 200,
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				body: jsonBody.challenge
+			response.headers = {
+				'Content-Type': 'application/x-www-form-urlencoded'
 			};
+			response.body = jsonBody.challenge;
 			break;
 		
 		case 'event_callback':
 			OAuth.retrieveAccessToken(jsonBody.team_id, (botAccessToken) => {
 				handleEvent(jsonBody.event, botAccessToken);
 			});
-			response = {
-				statusCode: 200
-			};
 			break;
-			
-		default:
-			response = {
-				statusCode: 200
-			};
 	}
 
 	callback(null, response);
