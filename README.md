@@ -1,4 +1,4 @@
-# lambda-node
+# Emojibot
 
 Learning AWS Lambda on Node.js.
 

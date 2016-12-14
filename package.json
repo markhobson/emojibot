@@ -1,5 +1,5 @@
 {
-  "name": "hello-lambda",
+  "name": "emojibot",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",

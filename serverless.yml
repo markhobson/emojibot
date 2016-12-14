@@ -1,4 +1,4 @@
-service: hello
+service: emojibot
 
 provider:
   name: aws
