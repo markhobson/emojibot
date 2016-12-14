@@ -1,9 +1,7 @@
 const https = require('https');
-const WebClient = require('@slack/client').WebClient;
 const OAuth = require('./oauth.js');
 const Templates = require('./templates.js');
-const emoji = require('./emoji.js');
-const pluralize = require('pluralize');
+const Bot = require('./bot.js');
 
 const client = {
 	id: process.env.CLIENT_ID,
@@ -67,31 +65,12 @@ module.exports.event = (event, context, callback) => {
 };
 
 const handleEvent = (event, token) => {
-	const web = new WebClient(token);
-	
 	switch (event.type) {
 		case 'message':
 			// ignore ourselves
-			if (event.subtype && event.subtype === 'bot_message') {
-				break;
+			if (!(event.subtype && event.subtype === 'bot_message')) {
+				Bot.process(event, token);
 			}
-			const reply = handleMessage(event.text);
-			web.chat.postMessage(event.channel, reply)
-				.catch(error => console.log(`Error posting Slack message: ${error}`));
 			break;
 	}
-};
-
-const handleMessage = text => {
-	const replies = text.match(/\w{2,}/g)
-		.map(word => word.toLowerCase())
-		.map(pluralize.singular)
-		.filter(word => emoji[word])
-		.map(word => `:${word}:`);
-	
-	if (replies.length === 0) {
-		return 'I have nothing.';
-	}
-	
-	return replies[Math.floor(Math.random() * replies.length)];
 };
