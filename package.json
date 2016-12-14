@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@slack/client": "^3.7.0",
-    "aws-sdk": "^2.7.13"
+    "aws-sdk": "^2.7.13",
+    "pluralize": "^3.1.0"
   }
 }
