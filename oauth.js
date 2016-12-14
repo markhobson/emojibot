@@ -11,14 +11,13 @@ module.exports.retrieveAccessToken = (teamId, callback) => {
 		}
 	};
 	
-	database.get(params, (error, result) => {
-		if (error) {
+	database.get(params).promise()
+		.then((result) => {
+			callback(result.Item.botAccessToken);
+		})
+		.catch((error) => {
 			console.log(`Error retrieving OAuth access token: ${error}`);
-			return;
-		}
-	
-		callback(result.Item.botAccessToken);
-	});
+		});
 };
 
 module.exports.storeAccessToken = (teamId, botAccessToken) => {
@@ -30,9 +29,8 @@ module.exports.storeAccessToken = (teamId, botAccessToken) => {
 		}
 	};
 	
-	database.put(params, (error, result) => {
-		if (error) {
+	database.put(params).promise()
+		.catch((error) => {
 			console.log(`Error storing OAuth access token: ${error}`);
-		}
-	});
+		});
 };
