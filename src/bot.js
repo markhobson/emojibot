@@ -1,12 +1,14 @@
-const WebClient = require('@slack/client').WebClient;
 const pluralize = require('pluralize');
 const emoji = require('./emoji.js');
 
-module.exports.process = (event, token) => {
+const Bot = function(web) {
+	this.web = web;
+};
+
+Bot.prototype.process = function(event) {
 	const reply = say(event.text);
 	
-	const web = new WebClient(token);
-	web.chat.postMessage(event.channel, reply)
+	this.web.chat.postMessage(event.channel, reply)
 		.catch(error => console.log(`Error posting Slack message: ${error}`));
 };
 
@@ -23,3 +25,5 @@ const say = (text) => {
 	
 	return replies[Math.floor(Math.random() * replies.length)];
 };
+
+module.exports = Bot;
