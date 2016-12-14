@@ -75,11 +75,8 @@ const handleEvent = (event, token) => {
 				break;
 			}
 			const reply = emoji[event.text] ? `:${event.text}:` : 'Sorry, I\'ve run out of emojis. :(';
-			web.chat.postMessage(event.channel, reply, function(error, result) {
-				if (error) {
-					console.log(`Error posting Slack message: ${error}`);
-				}
-			});
+			web.chat.postMessage(event.channel, reply)
+				.catch(error => console.log(`Error posting Slack message: ${error}`));
 			break;
 	}
 };
