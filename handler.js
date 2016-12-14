@@ -1,6 +1,7 @@
 const https = require('https');
 const WebClient = require('@slack/client').WebClient;
 const OAuth = require('./oauth.js');
+const Templates = require('./templates.js');
 const emoji = require('./emoji.js');
 
 const client = {
@@ -14,19 +15,7 @@ module.exports.install = (event, context, callback) => {
 		headers: {
 			'Content-Type': 'text/html'
 		},
-		body: `<!DOCTYPE html>
-			<html>
-				<head>
-					<title>emojibot</title>
-				</head>
-				<body>
-					<h1>emojibot</h1>
-					<p>Click the button to add @emojibot to Slack!</p>
-					<a href="https://slack.com/oauth/authorize?scope=bot&client_id=${client.id}">
-						<img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"/>
-					</a>
-				</body>
-			</html>`
+		body: Templates.install(client.id)
 	});
 };
 
@@ -47,16 +36,7 @@ module.exports.authorized = (event, context, callback) => {
 		headers: {
 			'Content-Type': 'text/html'
 		},
-		body: `<!DOCTYPE html>
-			<html>
-				<head>
-					<title>emojibot</title>
-				</head>
-				<body>
-					<h1>emojibot</h1>
-					<p>Thanks and enjoy!</p>
-				</body>
-			</html>`
+		body: Templates.authorized(client.id, client.secret)
 	});
 };
 
