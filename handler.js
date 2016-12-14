@@ -1,13 +1,12 @@
 const https = require('https');
-const AWS = require('aws-sdk');
 const WebClient = require('@slack/client').WebClient;
+const OAuth = require('./oauth.js');
 const emoji = require('./emoji.js');
 
 const client = {
 	id: process.env.CLIENT_ID,
 	secret: process.env.CLIENT_SECRET
 };
-const accessTokenTableName = 'accessTokenTable';
 
 module.exports.install = (event, context, callback) => {
 	callback(null, {
@@ -38,20 +37,8 @@ module.exports.authorized = (event, context, callback) => {
 		var body = '';
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => {
-			const database = new AWS.DynamoDB.DocumentClient();
 			const jsonBody = JSON.parse(body);
-			const params = {
-				TableName: accessTokenTableName,
-				Item: {
-					teamId: jsonBody.team_id,
-					botAccessToken: jsonBody.bot.bot_access_token
-				}
-			};
-			database.put(params, (error, result) => {
-				if (error) {
-					console.log(`Error storing OAuth access token: ${error}`);
-				}
-			});
+			OAuth.storeAccessToken(jsonBody.team_id, jsonBody.bot.bot_access_token);
 		});
 	});
 	
@@ -89,19 +76,8 @@ module.exports.event = (event, context, callback) => {
 			break;
 		
 		case 'event_callback':
-			const database = new AWS.DynamoDB.DocumentClient();
-			const params = {
-				TableName: accessTokenTableName,
-				Key: {
-					teamId: jsonBody.team_id
-				}
-			};
-			database.get(params, (error, result) => {
-				if (error) {
-					console.log(`Error retrieving OAuth access token: ${error}`);
-					return;
-				}
-				handleEvent(jsonBody.event, result.Item.botAccessToken);
+			OAuth.retrieveAccessToken(jsonBody.team_id, (botAccessToken) => {
+				handleEvent(jsonBody.event, botAccessToken);
 			});
 			response = {
 				statusCode: 200
