@@ -7,6 +7,7 @@ const client = {
 	id: process.env.CLIENT_ID,
 	secret: process.env.CLIENT_SECRET
 }
+const accessTokenTableName = 'accessTokenTable';
 
 module.exports.install = (event, context, callback) => {
 	callback(null, {
@@ -40,7 +41,7 @@ module.exports.thanks = (event, context, callback) => {
 			const database = new AWS.DynamoDB.DocumentClient();
 			const jsonBody = JSON.parse(body);
 			const params = {
-				TableName: 'accessTokenTable',
+				TableName: accessTokenTableName,
 				Item: {
 					teamId: jsonBody.team_id,
 					botAccessToken: jsonBody.bot.bot_access_token
@@ -73,22 +74,50 @@ module.exports.thanks = (event, context, callback) => {
 };
 
 module.exports.hello = (event, context, callback) => {
-	console.log(JSON.stringify(event));
+	const jsonBody = JSON.parse(event.body);
+	var response;
 	
-	var jsonBody = JSON.parse(event.body);
-	
-	if (jsonBody.type === 'url_verification') {
-		callback(null, {
-			statusCode: 200,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: jsonBody.challenge
-		});
+	switch (jsonBody.type) {
+		case 'url_verification':
+			response = {
+				statusCode: 200,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: jsonBody.challenge
+			};
+			break;
+		
+		case 'event_callback':
+			const database = new AWS.DynamoDB.DocumentClient();
+			const params = {
+				TableName: accessTokenTableName,
+				Key: {
+					teamId: jsonBody.team_id
+				}
+			};
+			database.get(params, (error, result) => {
+				if (error) {
+					console.log(`Error retrieving OAuth access token: ${error}`);
+					return;
+				}
+				const botAccessToken = result.Item.botAccessToken;
+				handleEvent(jsonBody.event, botAccessToken);
+			});
+			response = {
+				statusCode: 200
+			};
+			break;
+			
+		default:
+			response = {
+				statusCode: 200
+			};
 	}
 
-	callback(null, {
-		statusCode: 200,
-		body: 'Hello!'
-	});
+	callback(null, response);
+};
+
+const handleEvent = (event, accessToken) => {
+	console.log(`event=${JSON.stringify(event)} hasAccessToken=${accessToken !== undefined}`);
 };
