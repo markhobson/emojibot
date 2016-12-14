@@ -1,6 +1,7 @@
 'use strict';
 
 const https = require('https');
+const AWS = require('aws-sdk');
 
 const client = {
 	id: process.env.CLIENT_ID,
@@ -36,10 +37,20 @@ module.exports.thanks = (event, context, callback) => {
 		var body = '';
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => {
+			const database = new AWS.DynamoDB.DocumentClient();
 			const jsonBody = JSON.parse(body);
-			const botAccessToken = jsonBody.bot.bot_access_token;
-			const teamId = jsonBody.team_id;
-			console.log(`team id = ${teamId}, bot access token = ${botAccessToken}`);
+			const params = {
+				TableName: 'accessTokenTable',
+				Item: {
+					teamId: jsonBody.team_id,
+					botAccessToken: jsonBody.bot.bot_access_token
+				}
+			};
+			database.put(params, (error, result) => {
+				if (error) {
+					console.log(`Error storing OAuth access token: ${error}`);
+				}
+			});
 		});
 	});
 	

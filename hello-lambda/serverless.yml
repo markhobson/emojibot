@@ -4,6 +4,11 @@ provider:
   name: aws
   region: eu-west-1
   runtime: nodejs4.3
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:*
 
 functions:
   install:
@@ -23,3 +28,19 @@ functions:
     handler: handler.hello
     events:
       - http: POST hello
+
+resources:
+  Resources:
+    accessTokenTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: accessTokenTable
+        AttributeDefinitions:
+          - AttributeName: teamId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: teamId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
