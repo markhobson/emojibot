@@ -3,6 +3,7 @@
 const https = require('https');
 const AWS = require('aws-sdk');
 const WebClient = require('@slack/client').WebClient;
+const emoji = require('./emoji.js');
 
 const client = {
 	id: process.env.CLIENT_ID,
@@ -127,7 +128,8 @@ const handleEvent = (event, token) => {
 			if (event.subtype && event.subtype === 'bot_message') {
 				break;
 			}
-			web.chat.postMessage(event.channel, 'Hello there!', function(error, result) {
+			const reply = emoji[event.text] ? `:${event.text}:` : 'Sorry, I\'ve run out of emojis. :(';
+			web.chat.postMessage(event.channel, reply, function(error, result) {
 				if (error) {
 					console.log(`Error posting Slack message: ${error}`);
 				}
