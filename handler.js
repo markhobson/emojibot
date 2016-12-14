@@ -27,7 +27,8 @@ module.exports.authorized = (event, context, callback) => {
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => {
 			const jsonBody = JSON.parse(body);
-			OAuth.storeAccessToken(jsonBody.team_id, jsonBody.bot.bot_access_token);
+			OAuth.storeAccessToken(jsonBody.team_id, jsonBody.bot.bot_access_token)
+				.catch(error => console.log(error));
 		});
 	});
 	
@@ -55,9 +56,9 @@ module.exports.event = (event, context, callback) => {
 			break;
 		
 		case 'event_callback':
-			OAuth.retrieveAccessToken(jsonBody.team_id, (botAccessToken) => {
-				handleEvent(jsonBody.event, botAccessToken);
-			});
+			OAuth.retrieveAccessToken(jsonBody.team_id)
+				.then(botAccessToken => handleEvent(jsonBody.event, botAccessToken))
+				.catch(error => console.log(error));
 			break;
 	}
 
