@@ -13,20 +13,20 @@ provider:
 
 functions:
   install:
-    handler: handler.install
+    handler: src/handler.install
     environment:
       CLIENT_ID: ${env:CLIENT_ID}
     events:
       - http: GET install
   authorized:
-    handler: handler.authorized
+    handler: src/handler.authorized
     environment:
       CLIENT_ID: ${env:CLIENT_ID}
       CLIENT_SECRET: ${env:CLIENT_SECRET}
     events:
       - http: GET authorized
   event:
-    handler: handler.event
+    handler: src/handler.event
     events:
       - http: POST event
 
