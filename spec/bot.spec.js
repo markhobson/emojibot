@@ -16,25 +16,25 @@ describe('Bot', () => {
 	it('should respond with matching emoji', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
-		bot.process({text: 'dog', channel: 'channel'}, 'token');
+		bot.process({text: 'pig', channel: 'channel'}, 'token');
 		
-		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':pig:');
 	});
 	
 	it('should respond with matching emoji ignoring case', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
-		bot.process({text: 'DOG', channel: 'channel'}, 'token');
+		bot.process({text: 'PIG', channel: 'channel'}, 'token');
 		
-		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':pig:');
 	});
 	
 	it('should respond with emoji for plurals', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 
-		bot.process({text: 'dogs', channel: 'channel'}, 'token');
+		bot.process({text: 'pigs', channel: 'channel'}, 'token');
 
-		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':pig:');
 	});
 
 	it('should respond with emoji for singulars', () => {
@@ -48,17 +48,35 @@ describe('Bot', () => {
 	it('should respond with emoji for matching word', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 
-		bot.process({text: 'foo dog foo', channel: 'channel'}, 'token');
+		bot.process({text: 'foo pig foo', channel: 'channel'}, 'token');
 
-		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':pig:');
+	});
+	
+	it('should respond with random emoji for matching word', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+
+		bot.process({text: 'dog', channel: 'channel'}, 'token');
+
+		expect(web.chat.postMessage)
+			.toHaveBeenCalledWith('channel', jasmine.stringMatching(/(:dog:|:feet:|:poodle:|:wolf:)/));
 	});
 	
 	it('should respond with emoji for a random matching word', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 
-		bot.process({text: 'cat dog fish', channel: 'channel'}, 'token');
+		bot.process({text: 'horse pig wolf', channel: 'channel'}, 'token');
 
-		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', jasmine.stringMatching(/(:cat:|:dog:|:fish:)/));
+		expect(web.chat.postMessage)
+			.toHaveBeenCalledWith('channel', jasmine.stringMatching(/(:horse:|:pig:|:wolf:)/));
+	});
+	
+	it('should respond with emoji for synonyms', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+		
+		bot.process({text: 'woof', channel: 'channel'}, 'token');
+		
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
 	});
 	
 	it('should respond with message for single letter words', () => {

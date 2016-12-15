@@ -1,6 +1,14 @@
 const pluralize = require('pluralize');
 const emoji = require('./emoji.js');
 
+const wordToEmojis = Object.keys(emoji)
+	.map(name => [[name, `:${name}:`]].concat(emoji[name].map(alternative => [alternative, `:${name}:`])))
+	.reduce((array, next) => array.concat(next))
+	.reduce((map, next) => {
+		map[next[0]] = (map[next[0]] || []).concat(next[1]);
+		return map;
+	}, {});
+
 const Bot = function(web) {
 	this.web = web;
 };
@@ -16,9 +24,10 @@ const say = (text) => {
 	const replies = (text.match(/\w{3,}/g) || [])
 		.map(word => word.toLowerCase())
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
-		.reduce((x, y) => x.concat(y), [])
-		.filter(word => emoji[word])
-		.map(word => `:${word}:`);
+		.reduce((array, next) => array.concat(next), [])
+		.map(word => wordToEmojis[word])
+		.filter(emojis => emojis !== undefined)
+		.reduce((array, next) => array.concat(next), []);
 	
 	if (replies.length === 0) {
 		return 'I have nothing.';
