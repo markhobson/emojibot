@@ -13,7 +13,7 @@ module.exports.install = (clientId) =>
 		</body>
 	</html>`;
 
-module.exports.authorized = (clientId, clientSecret) =>
+module.exports.authorized = () =>
 	`<!DOCTYPE html>
 	<html>
 		<head>

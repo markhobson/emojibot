@@ -37,7 +37,7 @@ module.exports.authorized = (event, context, callback) => {
 		headers: {
 			'Content-Type': 'text/html'
 		},
-		body: Templates.authorized(client.id, client.secret)
+		body: Templates.authorized()
 	});
 };
 
