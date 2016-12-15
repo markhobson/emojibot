@@ -39,11 +39,7 @@ const say = (text) => {
 		.filter(emojis => emojis !== undefined)
 		.reduce((array, next) => array.concat(next), []);
 	
-	if (replies.length === 0) {
-		return 'I have nothing.';
-	}
-	
-	return replies[Math.floor(Math.random() * replies.length)];
+	return replies[Math.floor(Math.random() * replies.length)] || 'I have nothing.';
 };
 
 module.exports = Bot;
