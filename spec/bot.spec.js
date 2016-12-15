@@ -105,8 +105,8 @@ describe('Bot', () => {
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
-		it('should respond with message for common words', () => {
-			bot.process({text: 'like', channel: channel}, 'token');
+		it('should respond with message for stop words', () => {
+			bot.process({text: 'and', channel: channel}, 'token');
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith(channel, 'I have nothing.');
 			expect(web.reactions.add).not.toHaveBeenCalled();

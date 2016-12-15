@@ -1,13 +1,13 @@
 const pluralize = require('pluralize');
+const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
+
+const stopwordsMap = stopwords.reduce((map, next) => map.set(next, true), new Map());
 
 const wordToEmojis = Object.keys(emoji)
 	.map(name => [[name, name]].concat(emoji[name].map(alternative => [alternative, name])))
 	.reduce((array, next) => array.concat(next))
 	.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
-
-const commonWords = ['it', 'like', 'on', 'you', 'what']
-	.reduce((map, next) => map.set(next, true), new Map());
 
 const Bot = function(web) {
 	this.web = web;
@@ -19,7 +19,7 @@ Bot.prototype.process = function(event) {
 	
 	const names = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
-		.filter(word => !commonWords.has(word))
+		.filter(word => !stopwordsMap.has(word))
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
 		.reduce((array, next) => array.concat(next), [])
 		.filter(word => wordToEmojis.has(word))
