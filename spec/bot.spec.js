@@ -87,6 +87,14 @@ describe('Bot', () => {
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', 'I have nothing.');
 	});
 	
+	it('should respond with message for common words', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+		
+		bot.process({text: 'like', channel: 'channel'}, 'token');
+		
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', 'I have nothing.');
+	});
+	
 	it('should respond with message when no matches', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		

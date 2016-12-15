@@ -9,6 +9,15 @@ const wordToEmojis = Object.keys(emoji)
 		return map;
 	}, {});
 
+const commonWords = [
+	'it',
+	'like',
+	'you'
+].reduce((map, next) => {
+	map[next] = true;
+	return map
+}, {});
+
 const Bot = function(web) {
 	this.web = web;
 };
@@ -23,6 +32,7 @@ Bot.prototype.process = function(event) {
 const say = (text) => {
 	const replies = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
+		.filter(word => !commonWords[word])
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
 		.reduce((array, next) => array.concat(next), [])
 		.map(word => wordToEmojis[word])
