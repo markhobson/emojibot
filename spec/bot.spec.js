@@ -21,6 +21,14 @@ describe('Bot', () => {
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
 	});
 	
+	it('should respond with matching emoji ignoring case', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+		
+		bot.process({text: 'DOG', channel: 'channel'}, 'token');
+		
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+	});
+	
 	it('should respond with emoji for plurals', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 
