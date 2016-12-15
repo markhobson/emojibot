@@ -6,7 +6,7 @@ const wordToEmojis = Object.keys(emoji)
 	.reduce((array, next) => array.concat(next))
 	.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
 
-const commonWords = ['it', 'like', 'you']
+const commonWords = ['it', 'like', 'on', 'you', 'what']
 	.reduce((map, next) => map.set(next, true), new Map());
 
 const Bot = function(web) {
