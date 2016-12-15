@@ -42,6 +42,7 @@ const luceneStopwords = [
 module.exports = luceneStopwords.concat([
 	'have',
 	'like',
+	'so',
 	'up',
 	'you',
 	'what'
