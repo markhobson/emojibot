@@ -119,6 +119,13 @@ describe('Bot', () => {
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
+		it('should respond with message for mentions', () => {
+			bot.process({text: '@pig', channel: channel}, 'token');
+			
+			expect(web.chat.postMessage).toHaveBeenCalledWith(channel, 'I have nothing.');
+			expect(web.reactions.add).not.toHaveBeenCalled();
+		});
+		
 		it('should respond with message when no matches', () => {
 			bot.process({text: 'foo', channel: channel}, 'token');
 			

@@ -14,7 +14,8 @@ const Bot = function(web) {
 };
 
 Bot.prototype.process = function(event) {
-	const text = event.text.replace(/http[^\s]*/, '');
+	const text = event.text.replace(/http[^\s]*/, '')
+		.replace(/@[^\s]+/, '');
 	
 	const names = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
