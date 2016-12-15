@@ -53,6 +53,14 @@ describe('Bot', () => {
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
 	});
 	
+	it('should respond with emoji for a random matching word', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+
+		bot.process({text: 'cat dog fish', channel: 'channel'}, 'token');
+
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', jasmine.stringMatching(/(:cat:|:dog:|:fish:)/));
+	});
+	
 	it('should respond with message for single letter words', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
