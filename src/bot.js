@@ -13,7 +13,7 @@ Bot.prototype.process = function(event) {
 };
 
 const say = (text) => {
-	const replies = (text.match(/\w{2,}/g) || [])
+	const replies = (text.match(/\w{3,}/g) || [])
 		.map(word => word.toLowerCase())
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
 		.reduce((x, y) => x.concat(y), [])

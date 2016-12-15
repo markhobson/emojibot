@@ -45,6 +45,14 @@ describe('Bot', () => {
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', 'I have nothing.');
 	});
 	
+	it('should respond with message for double letter words', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+		
+		bot.process({text: 'it', channel: 'channel'}, 'token');
+		
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', 'I have nothing.');
+	});
+	
 	it('should respond with message when no matches', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
