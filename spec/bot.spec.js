@@ -45,6 +45,14 @@ describe('Bot', () => {
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':eyes:');
 	});
 	
+	it('should respond with emoji for matching word', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+
+		bot.process({text: 'foo dog foo', channel: 'channel'}, 'token');
+
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':dog:');
+	});
+	
 	it('should respond with message for single letter words', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
