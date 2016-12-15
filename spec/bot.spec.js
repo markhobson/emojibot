@@ -36,8 +36,16 @@ describe('Bot', () => {
 
 		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', ':eyes:');
 	});
-
-	it('should respond when no matches', () => {
+	
+	it('should respond with message for single letter words', () => {
+		spyOn(web.chat, 'postMessage').and.callThrough();
+		
+		bot.process({text: 'a', channel: 'channel'}, 'token');
+		
+		expect(web.chat.postMessage).toHaveBeenCalledWith('channel', 'I have nothing.');
+	});
+	
+	it('should respond with message when no matches', () => {
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		
 		bot.process({text: 'foo', channel: 'channel'}, 'token');
