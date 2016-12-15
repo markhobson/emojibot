@@ -23,14 +23,7 @@ const Bot = function(web) {
 };
 
 Bot.prototype.process = function(event) {
-	const reply = say(event.text);
-	
-	this.web.chat.postMessage(event.channel, reply)
-		.catch(error => console.log(`Error posting Slack message: ${error}`));
-};
-
-const say = (text) => {
-	const replies = (text.match(/\w{2,}/g) || [])
+	const replies = (event.text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
 		.filter(word => !commonWords[word])
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
@@ -39,7 +32,10 @@ const say = (text) => {
 		.filter(emojis => emojis !== undefined)
 		.reduce((array, next) => array.concat(next), []);
 	
-	return replies[Math.floor(Math.random() * replies.length)] || 'I have nothing.';
+	const reply = replies[Math.floor(Math.random() * replies.length)] || 'I have nothing.';
+	
+	this.web.chat.postMessage(event.channel, reply)
+		.catch(error => console.log(`Error posting Slack message: ${error}`));
 };
 
 module.exports = Bot;
