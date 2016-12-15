@@ -14,7 +14,9 @@ const Bot = function(web) {
 };
 
 Bot.prototype.process = function(event) {
-	const names = (event.text.match(/\w{2,}/g) || [])
+	const text = event.text.replace(/http[^\s]*/, '');
+	
+	const names = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
 		.filter(word => !commonWords.has(word))
 		.map(word => [pluralize.singular(word), pluralize.plural(word)])
