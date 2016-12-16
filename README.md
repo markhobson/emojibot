@@ -22,3 +22,16 @@ Learning AWS Lambda on Node.js.
 	```
 	serverless deploy
 	```
+
+  Make a note of the endpoints output once it has deployed, e.g.:
+  
+	```
+	endpoints:
+	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/install
+	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/authorized
+	  POST - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/event
+	```
+	
+* Go to your [Slack app](https://api.slack.com/apps) settings and update them to point to your server:
+  * Select 'OAuth & Permissions' and in the 'Redirect URL(s)' box paste the `authorized` endpoint
+  * Select 'Event Subscriptions' and in the 'Request URL' box paste the `event` endpoint
