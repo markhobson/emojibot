@@ -5,7 +5,9 @@ const emoji = require('./emoji.js');
 const stopwordsMap = stopwords.reduce((map, next) => map.set(next, true), new Map());
 
 const emojiMap = Object.keys(emoji)
-	.map(name => [[name, name]].concat(emoji[name].map(alternative => [alternative, name])))
+	.map(name => [[pluralize.singular(name), name]]
+		.concat(emoji[name].map(alternative => [pluralize.singular(alternative), name]))
+	)
 	.reduce((array, next) => array.concat(next))
 	.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
 
@@ -21,8 +23,7 @@ Bot.prototype.process = function(event) {
 	const names = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
 		.filter(word => !stopwordsMap.has(word))
-		.map(word => [pluralize.singular(word), pluralize.plural(word)])
-		.reduce((array, next) => array.concat(next), [])
+		.map(word => pluralize.singular(word))
 		.filter(word => emojiMap.has(word))
 		.map(word => emojiMap.get(word))
 		.reduce((array, next) => array.concat(next), []);
