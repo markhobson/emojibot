@@ -11,9 +11,15 @@ Learning AWS Lambda on Node.js.
 	```
 	# Local variables -- DO NOT COMMIT!
 	
-	slack:
-	  clientId: "<Your Slack App Client ID>"
-	  clientSecret: <Your Slack App Client Secret>
+	dev:
+	  slack:
+	    clientId: "<Your Dev Slack App Client ID>"
+	    clientSecret: <Your Dev Slack App Client Secret>
+	
+	production:
+	  slack:
+	    clientId: "<Your Production Slack App Client ID>"
+	    clientSecret: <Your Production Slack App Client Secret>
 	```
 
   Note that the client id must be quoted otherwise it is interpreted as a number. Do not commit this file. It is already Git ignored.
