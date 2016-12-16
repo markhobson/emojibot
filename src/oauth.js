@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 
 const database = new AWS.DynamoDB.DocumentClient();
-const accessTokenTableName = 'accessTokenTable';
+const accessTokenTableName = process.env.ACCESS_TOKEN_TABLE_NAME;
 
 module.exports.retrieveAccessToken = (teamId) => {
 	const params = {
