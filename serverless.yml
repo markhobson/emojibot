@@ -15,14 +15,14 @@ functions:
   install:
     handler: src/handler.install
     environment:
-      CLIENT_ID: ${env:CLIENT_ID}
+      CLIENT_ID: ${file(local.yml):slack.clientId}
     events:
       - http: GET install
   authorized:
     handler: src/handler.authorized
     environment:
-      CLIENT_ID: ${env:CLIENT_ID}
-      CLIENT_SECRET: ${env:CLIENT_SECRET}
+      CLIENT_ID: ${file(local.yml):slack.clientId}
+      CLIENT_SECRET: ${file(local.yml):slack.clientSecret}
     events:
       - http: GET authorized
   event:
