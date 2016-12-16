@@ -1,5 +1,12 @@
 service: emojibot
 
+package:
+  exclude:
+    - "**"
+  include:
+    - node_modules/**
+    - src/**
+
 provider:
   name: aws
   region: eu-west-1
