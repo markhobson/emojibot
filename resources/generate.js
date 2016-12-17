@@ -2,6 +2,7 @@
 
 const http = require('http');
 const cheerio = require('cheerio');
+const pluralize = require('pluralize');
 const fs = require('fs');
 
 const inputUrl = 'http://www.webpagefx.com/tools/emoji-cheat-sheet/index.html';
@@ -28,16 +29,22 @@ const parse = (html) => {
 	return map;
 };
 
+const transform = (map) => {
+	return [...map]
+		.map(([name, alternativeNames]) => [[pluralize.singular(name), name]]
+			.concat(alternativeNames.map(alternativeName => [pluralize.singular(alternativeName), name]))
+		)
+		.reduce((array, next) => array.concat(next))
+		.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
+};
+
 const script = (map) => {
-	const object = {};
-	map.forEach((value, key) => object[key] = value);
-	
-	const string = JSON.stringify(object, null, '\t')
+	const string = JSON.stringify([...map], null, '\t')
 		.replace(/"/g, '\'');
 	
 	return `// DO NOT EDIT! Built by: npm run generate
 
-module.exports = ${string};
+module.exports = new Map(${string});
 `;
 };
 
@@ -53,5 +60,5 @@ const fsWriteFile = (file, data) => new Promise((resolve, reject) => {
 });
 
 httpGet(inputUrl)
-	.then(html => fsWriteFile(outputFile, script(parse(html))))
+	.then(html => fsWriteFile(outputFile, script(transform(parse(html)))))
 	.then(console.log(`Generated ${outputFile}`));

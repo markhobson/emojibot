@@ -4,13 +4,6 @@ const emoji = require('./emoji.js');
 
 const stopwordsMap = stopwords.reduce((map, next) => map.set(next, true), new Map());
 
-const emojiMap = Object.keys(emoji)
-	.map(name => [[pluralize.singular(name), name]]
-		.concat(emoji[name].map(alternative => [pluralize.singular(alternative), name]))
-	)
-	.reduce((array, next) => array.concat(next))
-	.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
-
 const Bot = function(web) {
 	this.web = web;
 };
@@ -24,8 +17,8 @@ Bot.prototype.process = function(event) {
 		.map(word => word.toLowerCase())
 		.filter(word => !stopwordsMap.has(word))
 		.map(word => pluralize.singular(word))
-		.filter(word => emojiMap.has(word))
-		.map(word => emojiMap.get(word))
+		.filter(word => emoji.has(word))
+		.map(word => emoji.get(word))
 		.reduce((array, next) => array.concat(next), []);
 	
 	const name = names[Math.floor(Math.random() * names.length)];
