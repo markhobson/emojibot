@@ -39,7 +39,7 @@ const transform = (map) => {
 };
 
 const script = (map) => {
-	const string = JSON.stringify([...map], null, '\t')
+	const string = JSON.stringify([...map])
 		.replace(/"/g, '\'');
 	
 	return `// DO NOT EDIT! Built by: npm run generate
