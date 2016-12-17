@@ -39,7 +39,7 @@ const luceneStopwords = [
 ];
 
 // Additional words that have tenuous emojis
-module.exports = luceneStopwords.concat([
+const additionalStopwords = [
 	'has',
 	'have',
 	'here',
@@ -48,4 +48,7 @@ module.exports = luceneStopwords.concat([
 	'up',
 	'you',
 	'what'
-]);
+];
+
+module.exports = luceneStopwords.concat(additionalStopwords)
+	.reduce((map, next) => map.set(next, true), new Map());

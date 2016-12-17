@@ -2,8 +2,6 @@ const pluralize = require('pluralize');
 const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
 
-const stopwordsMap = stopwords.reduce((map, next) => map.set(next, true), new Map());
-
 const Bot = function(web) {
 	this.web = web;
 };
@@ -15,7 +13,7 @@ Bot.prototype.process = function(event) {
 	
 	const names = (text.match(/\w{2,}/g) || [])
 		.map(word => word.toLowerCase())
-		.filter(word => !stopwordsMap.has(word))
+		.filter(word => !stopwords.has(word))
 		.map(word => pluralize.singular(word))
 		.filter(word => emoji.has(word))
 		.map(word => emoji.get(word))
