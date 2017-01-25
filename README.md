@@ -41,3 +41,7 @@ Learning AWS Lambda on Node.js.
 * Go to your [Slack app](https://api.slack.com/apps) settings and update them to point to your server:
   * Select 'OAuth & Permissions' and in the 'Redirect URL(s)' box paste the `authorized` endpoint
   * Select 'Event Subscriptions' and in the 'Request URL' box paste the `event` endpoint
+
+## See also
+
+* Blog: [Building a serverless chatbot on AWS Lambda](https://www.blackpepper.co.uk/blog/creating-a-serverless-slack-bot-on-aws-lambda)
