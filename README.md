@@ -26,6 +26,7 @@ Learning AWS Lambda on Node.js.
 * Deploy the server to AWS Lambda:
 
 	```
+	npm install
 	serverless deploy
 	```
 
