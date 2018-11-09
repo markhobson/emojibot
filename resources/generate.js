@@ -1,15 +1,15 @@
 // Generates src/emoji.js
 
-const http = require('http');
+const https = require('https');
 const cheerio = require('cheerio');
 const pluralize = require('pluralize');
 const fs = require('fs');
 
-const inputUrl = 'http://www.webpagefx.com/tools/emoji-cheat-sheet/index.html';
+const inputUrl = 'https://www.webpagefx.com/tools/emoji-cheat-sheet/index.html';
 const outputFile = 'src/emoji.js';
 
-const httpGet = (url) => new Promise((resolve, reject) => {
-	http.get(url, response => {
+const httpsGet = (url) => new Promise((resolve, reject) => {
+	https.get(url, response => {
 		var body = '';
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => resolve(body));
@@ -59,6 +59,6 @@ const fsWriteFile = (file, data) => new Promise((resolve, reject) => {
 	})
 });
 
-httpGet(inputUrl)
+httpsGet(inputUrl)
 	.then(html => fsWriteFile(outputFile, script(transform(parse(html)))))
 	.then(console.log(`Generated ${outputFile}`));
