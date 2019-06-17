@@ -46,6 +46,7 @@ const additionalStopwords = [
 	'like',
 	'so',
 	'up',
+	'us',
 	'you',
 	'what'
 ];
