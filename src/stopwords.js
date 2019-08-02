@@ -48,8 +48,8 @@ const additionalStopwords = [
 	'so',
 	'up',
 	'us',
-	'you',
-	'what'
+	'what',
+	'you'
 ];
 
 module.exports = luceneStopwords.concat(additionalStopwords)
