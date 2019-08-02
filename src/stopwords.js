@@ -44,11 +44,12 @@ const additionalStopwords = [
 	'have',
 	'here',
 	'like',
+	'me',
 	'so',
 	'up',
 	'us',
-	'you',
-	'what'
+	'what',
+	'you'
 ];
 
 module.exports = luceneStopwords.concat(additionalStopwords)
