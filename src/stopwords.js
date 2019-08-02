@@ -44,6 +44,7 @@ const additionalStopwords = [
 	'have',
 	'here',
 	'like',
+	'me',
 	'so',
 	'up',
 	'us',
