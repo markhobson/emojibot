@@ -59,6 +59,14 @@ Learning AWS Lambda on Node.js.
 
 1. Finally, install your Slack app by visiting your `install` endpoint and clicking the 'Add to Slack' button
 
+## Running tests
+
+To run the unit tests:
+
+```
+npm test
+```
+
 ## Removing
 
 To undeploy the server from AWS:
