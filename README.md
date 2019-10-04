@@ -30,6 +30,8 @@ Learning AWS Lambda on Node.js.
 	serverless deploy
 	```
 
+  Note that you'll be charged for these services until they are [removed](#removing).
+
   Make a note of the endpoints output once it has deployed, e.g.:
   
 	```
@@ -52,6 +54,14 @@ Learning AWS Lambda on Node.js.
   * Select 'Bot Users' and add a bot user
 
 * Finally, install your Slack app by visiting your `install` endpoint and clicking the 'Add to Slack' button
+
+## Removing
+
+To undeploy the server from AWS:
+
+```
+serverless remove
+```
 
 ## See also
 
