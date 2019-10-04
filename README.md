@@ -59,6 +59,14 @@ Learning AWS Lambda on Node.js.
 
 1. Finally, install your Slack app by visiting your `install` endpoint and clicking the 'Add to Slack' button
 
+## Updating emojis
+
+The bot works by using a map of words to emojis. This map is derived from [Emoji cheat sheet](https://www.webfx.com/tools/emoji-cheat-sheet/index.html) and stored in [emoji.js](src/emoji.js). To regenerate it:
+
+```
+npm run generate
+```
+
 ## Running tests
 
 To run the unit tests:
