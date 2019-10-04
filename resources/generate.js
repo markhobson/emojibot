@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const pluralize = require('pluralize');
 const fs = require('fs');
 
-const inputUrl = 'https://www.webpagefx.com/tools/emoji-cheat-sheet/index.html';
+const inputUrl = 'https://www.webfx.com/tools/emoji-cheat-sheet/index.html';
 const outputFile = 'src/emoji.js';
 
 const httpsGet = (url) => new Promise((resolve, reject) => {
