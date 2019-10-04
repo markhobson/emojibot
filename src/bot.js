@@ -23,11 +23,11 @@ Bot.prototype.process = function(event) {
 	
 	if (event.channel.startsWith('D')) {
 		const reply = name ? `:${name}:` : 'I have nothing.';
-		this.web.chat.postMessage(event.channel, reply)
+		this.web.chat.postMessage({channel: event.channel, text: reply})
 			.catch(error => console.log(`Error posting Slack message: ${error}`));
 	}
 	else if (name) {
-		this.web.reactions.add(name, {channel: event.channel, timestamp: event.event_ts})
+		this.web.reactions.add({name, channel: event.channel, timestamp: event.event_ts})
 			.catch(error => console.log(`Error adding Slack reaction: ${error}`));
 	}
 };

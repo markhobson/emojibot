@@ -5,6 +5,9 @@ package:
     - "**"
   include:
     - node_modules/**
+    - "!node_modules/aws-sdk/**"
+    - "!node_modules/@types/**"
+    - "!node_modules/jasmine*/**"
     - src/**
 
 provider:
