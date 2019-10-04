@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@slack/client": "^3.7.0",
+    "@slack/web-api": "^5.2.0",
     "aws-sdk": "^2.7.13",
     "pluralize": "^3.1.0"
   },
