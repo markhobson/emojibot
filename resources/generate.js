@@ -44,10 +44,11 @@ const transform = (map) => {
 };
 
 const script = (map) => {
+	const sortedMap = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
+
 	const stringToLiteral = s => `'${s}'`;
 	const arrayToLiteral = array => `[${array.map(stringToLiteral).join(',')}]`;
 	const entryToLiteral = ([property, value]) => `[${stringToLiteral(property)},${arrayToLiteral(value)}]`;
-	const sortedMap = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
 	const mapToLiteral = map => `new Map([\n${sortedMap(map).map(entryToLiteral).join(',\n')}\n])`;
 
 	return `// DO NOT EDIT! Built by: npm run generate
