@@ -43,12 +43,15 @@ const transform = (map) => {
 };
 
 const script = (map) => {
-	const string = JSON.stringify([...map])
-		.replace(/"/g, '\'');
-	
+	const stringAsLiteral = s => `'${s}'`;
+	const arrayAsLiteral = array => `[${array.map(stringAsLiteral).join(',')}]`;
+	const entryAsLiteral = ([property, value]) => `[${stringAsLiteral(property)},${arrayAsLiteral(value)}]`;
+	const mapAsSortedEntries = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
+	const mapAsLiteral = map => `new Map([\n${mapAsSortedEntries(map).map(entryAsLiteral).join(',\n')}\n])`;
+
 	return `// DO NOT EDIT! Built by: npm run generate
 
-module.exports = new Map(${string});
+module.exports = ${mapAsLiteral(map)};
 `;
 };
 
