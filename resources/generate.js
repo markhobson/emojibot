@@ -26,8 +26,8 @@ const parse = (html) => {
 	
 	$('span.name').each((index, element) => {
 		const name = $(element).text();
-		const alternativeNames = ($(element).data('alternative-name') || '').split(/\s*,\s*/);
-		map.set(name, alternativeNames);
+		const alternativeNames = ($(element).data('alternative-name') || '').split(/\s*,\s*/).filter(s => s !== '');
+		map.set(name, [...new Set(alternativeNames)]);
 	});
 
 	return map;
