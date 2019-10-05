@@ -52,5 +52,4 @@ const additionalStopwords = [
 	'you'
 ];
 
-module.exports = luceneStopwords.concat(additionalStopwords)
-	.reduce((map, next) => map.set(next, true), new Map());
+module.exports = new Set([].concat(luceneStopwords, additionalStopwords));
