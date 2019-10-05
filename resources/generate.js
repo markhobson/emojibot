@@ -10,10 +10,14 @@ const outputFile = 'src/emoji.js';
 
 const httpsGet = (url) => new Promise((resolve, reject) => {
 	https.get(url, response => {
+		if (response.statusCode != 200) {
+			reject(new Error(`Request failed: ${response.statusCode} ${response.statusMessage}`));
+			response.resume();
+		}
 		var body = '';
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => resolve(body));
-	})
+	});
 });
 
 const parse = (html) => {
@@ -61,4 +65,5 @@ const fsWriteFile = (file, data) => new Promise((resolve, reject) => {
 
 httpsGet(inputUrl)
 	.then(html => fsWriteFile(outputFile, script(transform(parse(html)))))
-	.then(console.log(`Generated ${outputFile}`));
+	.then(() => console.log(`Generated ${outputFile}`))
+	.catch(error => console.error(`Generation failed\n${error.stack}`));
