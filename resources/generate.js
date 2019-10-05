@@ -10,11 +10,11 @@ const outputFile = 'src/emoji.js';
 
 const httpsGet = (url) => new Promise((resolve, reject) => {
 	https.get(url, response => {
-		if (response.statusCode != 200) {
+		if (response.statusCode !== 200) {
 			reject(new Error(`Request failed: ${response.statusCode} ${response.statusMessage}`));
 			response.resume();
 		}
-		var body = '';
+		let body = '';
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => resolve(body));
 	});
