@@ -52,4 +52,4 @@ const additionalStopwords = [
 	'you'
 ];
 
-module.exports = new Set([].concat(luceneStopwords, additionalStopwords));
+module.exports = new Set(luceneStopwords.concat(additionalStopwords));
