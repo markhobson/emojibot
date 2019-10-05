@@ -61,7 +61,7 @@ Learning AWS Lambda on Node.js.
 
 ## Updating emojis
 
-The bot works by using a map of words to emojis. This map is derived from [Emoji cheat sheet](https://www.webfx.com/tools/emoji-cheat-sheet/index.html) and stored in [emoji.js](src/emoji.js). To regenerate it:
+The bot works by using a map of words to emojis. This map is derived from [Emoji cheat sheet](http://www.emoji-cheat-sheet.com) and stored in [emoji.js](src/emoji.js). To regenerate it:
 
 ```
 npm run generate
