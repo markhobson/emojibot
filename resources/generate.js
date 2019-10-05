@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 const pluralize = require('pluralize');
 const fs = require('fs');
 
+// http://www.emoji-cheat-sheet.com after following redirects
 const inputUrl = 'https://www.webfx.com/tools/emoji-cheat-sheet/index.html';
 const outputFile = 'src/emoji.js';
 
