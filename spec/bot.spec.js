@@ -2,7 +2,6 @@ const Bot = require('../src/bot.js');
 
 describe('Bot', () => {
 	let web;
-	let bot;
 	
 	beforeEach(() => {
 		web = {
@@ -13,7 +12,6 @@ describe('Bot', () => {
 				add: () => Promise.resolve()
 			}
 		};
-		bot = new Bot(web);
 		
 		spyOn(web.chat, 'postMessage').and.callThrough();
 		spyOn(web.reactions, 'add').and.callThrough();
@@ -23,14 +21,14 @@ describe('Bot', () => {
 		const channel = 'C1234567890';
 		
 		it('should react with matching emoji', () => {
-			bot.process({text: 'pig', channel, event_ts: '1234567890.123456'});
+			Bot.process({text: 'pig', channel, event_ts: '1234567890.123456'}, web);
 			
 			expect(web.reactions.add).toHaveBeenCalledWith({name: 'pig', channel, timestamp: '1234567890.123456'});
 			expect(web.chat.postMessage).not.toHaveBeenCalled();
 		});
 		
 		it('should not respond when no matches', () => {
-			bot.process({text: 'foo', channel});
+			Bot.process({text: 'foo', channel}, web);
 			
 			expect(web.reactions.add).not.toHaveBeenCalled();
 			expect(web.chat.postMessage).not.toHaveBeenCalled();
@@ -41,42 +39,42 @@ describe('Bot', () => {
 		const channel = 'D1234567890';
 		
 		it('should respond with matching emoji', () => {
-			bot.process({text: 'pig', channel});
+			Bot.process({text: 'pig', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':pig:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with matching emoji ignoring case', () => {
-			bot.process({text: 'PIG', channel});
+			Bot.process({text: 'PIG', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':pig:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with emoji for plurals', () => {
-			bot.process({text: 'pigs', channel});
+			Bot.process({text: 'pigs', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':pig:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with emoji for singulars', () => {
-			bot.process({text: 'eye', channel});
+			Bot.process({text: 'eye', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':eyes:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with emoji for matching word', () => {
-			bot.process({text: 'foo pig foo', channel});
+			Bot.process({text: 'foo pig foo', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':pig:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with random emoji for matching word', () => {
-			bot.process({text: 'dog', channel});
+			Bot.process({text: 'dog', channel}, web);
 			
 			expect(web.chat.postMessage)
 				.toHaveBeenCalledWith({channel, text: jasmine.stringMatching(/(:dog:|:feet:|:poodle:|:wolf:)/)});
@@ -84,7 +82,7 @@ describe('Bot', () => {
 		});
 		
 		it('should respond with emoji for a random matching word', () => {
-			bot.process({text: 'horse pig wolf', channel});
+			Bot.process({text: 'horse pig wolf', channel}, web);
 			
 			expect(web.chat.postMessage)
 				.toHaveBeenCalledWith({channel, text: jasmine.stringMatching(/(:horse:|:pig:|:wolf:)/)});
@@ -92,42 +90,42 @@ describe('Bot', () => {
 		});
 		
 		it('should respond with emoji for synonyms', () => {
-			bot.process({text: 'woof', channel});
+			Bot.process({text: 'woof', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: ':dog:'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with message for single letter words', () => {
-			bot.process({text: 'a', channel});
+			Bot.process({text: 'a', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with message for stop words', () => {
-			bot.process({text: 'it', channel});
+			Bot.process({text: 'it', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with message for hyperlinks', () => {
-			bot.process({text: 'http://pig.com', channel});
+			Bot.process({text: 'http://pig.com', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with message for mentions', () => {
-			bot.process({text: '@pig', channel});
+			Bot.process({text: '@pig', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
 		it('should respond with message when no matches', () => {
-			bot.process({text: 'foo', channel});
+			Bot.process({text: 'foo', channel}, web);
 			
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();

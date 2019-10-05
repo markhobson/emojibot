@@ -66,13 +66,12 @@ module.exports.event = (event, context, callback) => {
 };
 
 const handleEvent = (event, token) => {
-	const bot = new Bot(new WebClient(token));
-	
 	switch (event.type) {
 		case 'message':
 			// ignore ourselves
 			if (!(event.subtype && event.subtype === 'bot_message')) {
-				bot.process(event);
+				const web = new WebClient(token);
+				Bot.process(event, web);
 			}
 			break;
 	}

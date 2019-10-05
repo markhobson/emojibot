@@ -2,11 +2,7 @@ const pluralize = require('pluralize');
 const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
 
-const Bot = function(web) {
-	this.web = web;
-};
-
-Bot.prototype.process = function(event) {
+module.exports.process = function(event, web) {
 	const text = event.text
 		.replace(/http[^\s]*/, '')
 		.replace(/@[^\s]+/, '');
@@ -23,13 +19,11 @@ Bot.prototype.process = function(event) {
 	
 	if (event.channel.startsWith('D')) {
 		const reply = name ? `:${name}:` : 'I have nothing.';
-		this.web.chat.postMessage({channel: event.channel, text: reply})
+		web.chat.postMessage({channel: event.channel, text: reply})
 			.catch(error => console.log(`Error posting Slack message: ${error}`));
 	}
 	else if (name) {
-		this.web.reactions.add({name, channel: event.channel, timestamp: event.event_ts})
+		web.reactions.add({name, channel: event.channel, timestamp: event.event_ts})
 			.catch(error => console.log(`Error adding Slack reaction: ${error}`));
 	}
 };
-
-module.exports = Bot;
