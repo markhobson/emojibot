@@ -1,4 +1,5 @@
 const https = require('https');
+const querystring = require('querystring');
 const OAuth = require('./oauth.js');
 const Templates = require('./templates.js');
 const WebClient = require('@slack/web-api').WebClient;
@@ -75,4 +76,26 @@ const handleEvent = (event, token) => {
 			}
 			break;
 	}
+};
+
+module.exports.explain = (event, context, callback) => {
+	const jsonBody = querystring.parse(event.body);
+	
+	const requestText = jsonBody.text;
+	const words = requestText.split(' ');
+	const emoji = words.pop();
+	const text = words.join(' ');
+
+	const responseText = Bot.explain(text, emoji);
+
+	callback(null, {
+		statusCode: 200,
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			'response_type': 'ephemeral',
+			'text': responseText
+		})
+	});
 };

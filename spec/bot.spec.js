@@ -131,4 +131,44 @@ describe('Bot', () => {
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 	});
+	
+	describe('when explaining', () => {
+		
+		it('should respond with matching word', () => {
+			const response = Bot.explain('pig', ':pig:');
+			
+			expect(response).toBe('I heard _pig_ which made me think of :pig:.');
+		});
+		
+		it('should respond with matching word that has multiple emoji', () => {
+			const response = Bot.explain('dog', ':poodle:');
+			
+			expect(response).toBe('I heard _dog_ which made me think of :poodle:.');
+		});
+		
+		it('should respond with random matching word', () => {
+			const response = Bot.explain('dog pet poodle', ':poodle:');
+			
+			expect(response).toMatch(/I heard _(dog|pet|poodle)_ which made me think of :poodle:\./);
+		});
+		
+		it('should respond with message when no text', () => {
+			const response = Bot.explain('', ':pig:');
+			
+			expect(response).toBe('I don\'t understand.');
+		});
+		
+		it('should respond with message when emoji invalid', () => {
+			const response = Bot.explain('pig', 'pig');
+			
+			expect(response).toBe('I don\'t understand.');
+		});
+		
+		it('should respond with message when no explanation', () => {
+			const response = Bot.explain('foo', ':pig:');
+			
+			expect(response).toBe('I never said that.');
+		});
+	});
+	
 });

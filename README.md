@@ -42,10 +42,16 @@ Learning AWS Lambda on Node.js.
 	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/install
 	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/authorized
 	  POST - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/event
+	  POST - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/explain
 	```
 	
 1. Go to your [Slack app](https://api.slack.com/apps) settings and update them to point to your server:
 	
+	1. Select 'Slash Commands' and add the following command:
+	    * Command: `/explain`
+	    * Request URL: paste the `explain` endpoint
+	    * Short Description: `Explains an emoji`
+	    * Usage Hint: `[input text] [received emoji]`
 	1. Select 'OAuth & Permissions' and under 'Redirect URLs' add the `authorized` endpoint
 	1. Select 'Event Subscriptions' and:
 		1. Turn on 'Enable Events'

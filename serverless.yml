@@ -39,6 +39,10 @@ functions:
     handler: src/handler.event
     events:
       - http: POST event
+  explain:
+    handler: src/handler.explain
+    events:
+      - http: POST explain
 
 resources:
   Resources:
