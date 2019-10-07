@@ -3,8 +3,7 @@ const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
 
 module.exports.process = function(event, web) {
-	// ignore ourselves
-	if (event.subtype && event.subtype === 'bot_message') {
+	if (isBotMessage(event) || isSlashCommand(event)) {
 		return;
 	}
 		
@@ -46,7 +45,6 @@ function getPaths(text) {
 	const words = text
 		.replace(/http[^\s]*/, '')
 		.replace(/@[^\s]+/, '')
-		.replace(/^\/.*/, '')
 		.match(/\w{2,}/g) || [];
 	
 	return words
@@ -56,6 +54,10 @@ function getPaths(text) {
 		.filter(path => emoji.has(path.out))
 		.map(path => ({...path, out: emoji.get(path.out)}));
 }
+
+const isBotMessage = event => event.subtype === 'bot_message';
+
+const isSlashCommand = event => event.text.startsWith('/');
 
 const toName = emoji => (/:(.*):/.exec(emoji) || [])[1];
 

@@ -124,13 +124,6 @@ describe('Bot', () => {
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
-		it('should respond with message for slash commands', () => {
-			Bot.process({text: '/pig pig', channel}, web);
-			
-			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
-			expect(web.reactions.add).not.toHaveBeenCalled();
-		});
-		
 		it('should respond with message when no matches', () => {
 			Bot.process({text: 'foo', channel}, web);
 			
@@ -144,6 +137,13 @@ describe('Bot', () => {
 			expect(web.chat.postMessage).not.toHaveBeenCalled();
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
+		
+		it('should not respond to slash command', () => {
+			Bot.process({text: '/pig pig', channel}, web);
+			
+			expect(web.chat.postMessage).not.toHaveBeenCalled();
+			expect(web.reactions.add).not.toHaveBeenCalled();
+		})
 	});
 	
 	describe('when explaining', () => {
