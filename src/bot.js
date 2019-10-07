@@ -13,7 +13,7 @@ module.exports.process = function(event, web) {
 	
 	const name = randomElement(names);
 	
-	if (event.channel.startsWith('D')) {
+	if (isDirectMessage(event)) {
 		const reply = name ? toEmoji(name) : 'I have nothing.';
 		web.chat.postMessage({channel: event.channel, text: reply})
 			.catch(error => console.log(`Error posting Slack message: ${error}`));
@@ -58,6 +58,8 @@ function getPaths(text) {
 const isBotMessage = event => event.subtype === 'bot_message';
 
 const isSlashCommand = event => event.text.startsWith('/');
+
+const isDirectMessage = event => event.channel.startsWith('D');
 
 const toName = emoji => (/:(.*):/.exec(emoji) || [])[1];
 
