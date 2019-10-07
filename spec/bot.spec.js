@@ -137,6 +137,13 @@ describe('Bot', () => {
 			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
+		
+		it('should not respond to bot message', () => {
+			Bot.process({text: 'foo', channel, subtype: 'bot_message'}, web);
+			
+			expect(web.chat.postMessage).not.toHaveBeenCalled();
+			expect(web.reactions.add).not.toHaveBeenCalled();
+		});
 	});
 	
 	describe('when explaining', () => {

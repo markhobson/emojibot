@@ -69,11 +69,8 @@ module.exports.event = (event, context, callback) => {
 const handleEvent = (event, token) => {
 	switch (event.type) {
 		case 'message':
-			// ignore ourselves
-			if (!(event.subtype && event.subtype === 'bot_message')) {
-				const web = new WebClient(token);
-				Bot.process(event, web);
-			}
+			const web = new WebClient(token);
+			Bot.process(event, web);
 			break;
 	}
 };

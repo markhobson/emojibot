@@ -3,6 +3,11 @@ const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
 
 module.exports.process = function(event, web) {
+	// ignore ourselves
+	if (event.subtype && event.subtype === 'bot_message') {
+		return;
+	}
+		
 	const names = getPaths(event.text)
 		.map(path => path.out)
 		.reduce((array, next) => array.concat(next), []);
