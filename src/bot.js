@@ -2,7 +2,7 @@ const pluralize = require('pluralize');
 const stopwords = require('./stopwords.js');
 const emoji = require('./emoji.js');
 
-module.exports.process = function(event, web) {
+function process(event, web) {
 	if (isBotMessage(event) || isSlashCommand(event)) {
 		return;
 	}
@@ -22,9 +22,9 @@ module.exports.process = function(event, web) {
 		web.reactions.add({name, channel: event.channel, timestamp: event.event_ts})
 			.catch(error => console.log(`Error adding Slack reaction: ${error}`));
 	}
-};
+}
 
-module.exports.explain = function(text, emoji) {
+function explain(text, emoji) {
 	let name = toName(emoji);
 
 	if (!text || !name) {
@@ -39,7 +39,7 @@ module.exports.explain = function(text, emoji) {
 	return path
 		? `I heard _${path.in}_ which made me think of ${emoji}.`
 		: 'I never said that.';
-};
+}
 
 function getPaths(text) {
 	const words = text
@@ -68,3 +68,6 @@ const toEmoji = name => `:${name}:`;
 const contains = (array, element) => array.indexOf(element) !== -1;
 
 const randomElement = array => array[Math.floor(Math.random() * array.length)];
+
+module.exports.process = process;
+module.exports.explain = explain;

@@ -1,4 +1,4 @@
-module.exports.install = (clientId) =>
+const install = (clientId) =>
 	`<!DOCTYPE html>
 	<html>
 		<head>
@@ -13,7 +13,7 @@ module.exports.install = (clientId) =>
 		</body>
 	</html>`;
 
-module.exports.authorized = () =>
+const authorized = () =>
 	`<!DOCTYPE html>
 	<html>
 		<head>
@@ -24,3 +24,6 @@ module.exports.authorized = () =>
 			<p>Thanks and enjoy!</p>
 		</body>
 	</html>`;
+
+module.exports.install = install;
+module.exports.authorized = authorized;

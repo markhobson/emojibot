@@ -10,7 +10,7 @@ const client = {
 	secret: process.env.CLIENT_SECRET
 };
 
-module.exports.install = (event, context, callback) => {
+const install = (event, context, callback) => {
 	callback(null, {
 		statusCode: 200,
 		headers: {
@@ -20,7 +20,7 @@ module.exports.install = (event, context, callback) => {
 	});
 };
 
-module.exports.authorized = (event, context, callback) => {
+const authorized = (event, context, callback) => {
 	const code = event.queryStringParameters.code;
 	
 	https.get(`https://slack.com/api/oauth.access?client_id=${client.id}&client_secret=${client.secret}&code=${code}`, response => {
@@ -42,7 +42,7 @@ module.exports.authorized = (event, context, callback) => {
 	});
 };
 
-module.exports.event = (event, context, callback) => {
+const event = (event, context, callback) => {
 	const jsonBody = JSON.parse(event.body);
 	const response = {
 		statusCode: 200
@@ -75,7 +75,7 @@ const handleEvent = (event, token) => {
 	}
 };
 
-module.exports.explain = (event, context, callback) => {
+const explain = (event, context, callback) => {
 	const jsonBody = querystring.parse(event.body);
 	
 	const requestText = jsonBody.text;
@@ -96,3 +96,8 @@ module.exports.explain = (event, context, callback) => {
 		})
 	});
 };
+
+module.exports.install = install;
+module.exports.authorized = authorized;
+module.exports.event = event;
+module.exports.explain  = explain;
