@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 const database = new AWS.DynamoDB.DocumentClient();
 const accessTokenTableName = process.env.ACCESS_TOKEN_TABLE_NAME;
 
-const retrieveAccessToken = (teamId) => {
+function retrieveAccessToken(teamId) {
 	const params = {
 		TableName: accessTokenTableName,
 		Key: {
@@ -16,9 +16,9 @@ const retrieveAccessToken = (teamId) => {
 			.then(result => resolve(result.Item.botAccessToken))
 			.catch(error => reject(new Error(`Error retrieving OAuth access token: ${error}`)));
 	});
-};
+}
 
-const storeAccessToken = (teamId, botAccessToken) => {
+function storeAccessToken(teamId, botAccessToken) {
 	const params = {
 		TableName: accessTokenTableName,
 		Item: {
@@ -32,7 +32,7 @@ const storeAccessToken = (teamId, botAccessToken) => {
 			.then(result => resolve())
 			.catch(error => reject(new Error(`Error storing OAuth access token: ${error}`)));
 	});
-};
+}
 
 module.exports.retrieveAccessToken = retrieveAccessToken;
 module.exports.storeAccessToken = storeAccessToken;

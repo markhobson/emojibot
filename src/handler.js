@@ -10,7 +10,7 @@ const client = {
 	secret: process.env.CLIENT_SECRET
 };
 
-const install = (event, context, callback) => {
+function install(event, context, callback) {
 	callback(null, {
 		statusCode: 200,
 		headers: {
@@ -18,9 +18,9 @@ const install = (event, context, callback) => {
 		},
 		body: Templates.install(client.id)
 	});
-};
+}
 
-const authorized = (event, context, callback) => {
+function authorized(event, context, callback) {
 	const code = event.queryStringParameters.code;
 	
 	https.get(`https://slack.com/api/oauth.access?client_id=${client.id}&client_secret=${client.secret}&code=${code}`, response => {
@@ -40,9 +40,9 @@ const authorized = (event, context, callback) => {
 		},
 		body: Templates.authorized()
 	});
-};
+}
 
-const event = (event, context, callback) => {
+function event(event, context, callback) {
 	const jsonBody = JSON.parse(event.body);
 	const response = {
 		statusCode: 200
@@ -64,18 +64,18 @@ const event = (event, context, callback) => {
 	}
 
 	callback(null, response);
-};
+}
 
-const handleEvent = (event, token) => {
+function handleEvent(event, token) {
 	switch (event.type) {
 		case 'message':
 			const web = new WebClient(token);
 			Bot.process(event, web);
 			break;
 	}
-};
+}
 
-const explain = (event, context, callback) => {
+function explain(event, context, callback) {
 	const jsonBody = querystring.parse(event.body);
 	
 	const requestText = jsonBody.text;
@@ -95,7 +95,7 @@ const explain = (event, context, callback) => {
 			'text': responseText
 		})
 	});
-};
+}
 
 module.exports.install = install;
 module.exports.authorized = authorized;

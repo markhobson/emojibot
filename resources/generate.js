@@ -9,19 +9,21 @@ const fs = require('fs');
 const inputUrl = 'https://www.webfx.com/tools/emoji-cheat-sheet/index.html';
 const outputFile = 'src/emoji.js';
 
-const httpsGet = (url) => new Promise((resolve, reject) => {
-	https.get(url, response => {
-		if (response.statusCode !== 200) {
-			reject(new Error(`Request failed: ${response.statusCode} ${response.statusMessage}`));
-			response.resume();
-		}
-		let body = '';
-		response.on('data', chunk => body += chunk);
-		response.on('end', () => resolve(body));
-	});
-});
+function httpsGet(url) {
+	return new Promise((resolve, reject) =>
+		https.get(url, response => {
+			if (response.statusCode !== 200) {
+				reject(new Error(`Request failed: ${response.statusCode} ${response.statusMessage}`));
+				response.resume();
+			}
+			let body = '';
+			response.on('data', chunk => body += chunk);
+			response.on('end', () => resolve(body));
+		})
+	);
+}
 
-const parse = (html) => {
+function parse(html) {
 	const $ = cheerio.load(html);
 	const map = new Map();
 	
@@ -32,18 +34,18 @@ const parse = (html) => {
 	});
 
 	return map;
-};
+}
 
-const transform = (map) => {
+function transform(map) {
 	return [...map]
 		.map(([name, alternativeNames]) => [[pluralize.singular(name), name]]
 			.concat(alternativeNames.map(alternativeName => [pluralize.singular(alternativeName), name]))
 		)
 		.reduce((array, next) => array.concat(next))
 		.reduce((map, next) => map.set(next[0], (map.get(next[0]) || []).concat(next[1])), new Map());
-};
+}
 
-const script = (map) => {
+function script(map) {
 	const sortedArray = array => Array.from(array).sort((a, b) => a.localeCompare(b));
 	const sortedMap = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
 
@@ -56,18 +58,19 @@ const script = (map) => {
 
 module.exports = ${mapToLiteral(map)};
 `;
-};
+}
 
-const fsWriteFile = (file, data) => new Promise((resolve, reject) => {
-	fs.writeFile(file, data, (error) => {
-		if (error) {
-			reject(error);
-		}
-		else {
-			resolve();
-		}
-	})
-});
+function fsWriteFile(file, data) {
+	return new Promise((resolve, reject) =>
+		fs.writeFile(file, data, (error) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve();
+			}
+		})
+	);
+}
 
 httpsGet(inputUrl)
 	.then(html => fsWriteFile(outputFile, script(transform(parse(html)))))
