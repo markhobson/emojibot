@@ -62,13 +62,9 @@ module.exports = ${mapToLiteral(map)};
 
 function fsWriteFile(file, data) {
 	return new Promise((resolve, reject) =>
-		fs.writeFile(file, data, (error) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve();
-			}
-		})
+		fs.writeFile(file, data, (error) =>
+			error ? reject(error) : resolve()
+		)
 	);
 }
 
