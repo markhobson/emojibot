@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 const Tokens = require('./tokens.js');
 const Templates = require('./templates.js');
-const WebClient = require('@slack/web-api').WebClient;
+const { WebClient } = require('@slack/web-api');
 const Bot = require('./bot.js');
 
 const client = {
