@@ -1,6 +1,6 @@
 const https = require('https');
 const querystring = require('querystring');
-const OAuth = require('./oauth.js');
+const Tokens = require('./tokens.js');
 const Templates = require('./templates.js');
 const WebClient = require('@slack/web-api').WebClient;
 const Bot = require('./bot.js');
@@ -28,7 +28,7 @@ function authorized(event, context, callback) {
 		response.on('data', chunk => body += chunk);
 		response.on('end', () => {
 			const jsonBody = JSON.parse(body);
-			OAuth.storeAccessToken(jsonBody.team_id, jsonBody.bot.bot_access_token)
+			Tokens.store(jsonBody.team_id, jsonBody.bot.bot_access_token)
 				.catch(error => console.log(error));
 		});
 	});
@@ -57,7 +57,7 @@ function event(event, context, callback) {
 			break;
 		
 		case 'event_callback':
-			OAuth.retrieveAccessToken(jsonBody.team_id)
+			Tokens.retrieve(jsonBody.team_id)
 				.then(botAccessToken => handleEvent(jsonBody.event, botAccessToken))
 				.catch(error => console.log(error));
 			break;

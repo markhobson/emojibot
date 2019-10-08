@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 const database = new AWS.DynamoDB.DocumentClient();
 const accessTokenTableName = process.env.ACCESS_TOKEN_TABLE_NAME;
 
-function retrieveAccessToken(teamId) {
+function retrieve(teamId) {
 	const params = {
 		TableName: accessTokenTableName,
 		Key: {
@@ -18,7 +18,7 @@ function retrieveAccessToken(teamId) {
 	});
 }
 
-function storeAccessToken(teamId, botAccessToken) {
+function store(teamId, botAccessToken) {
 	const params = {
 		TableName: accessTokenTableName,
 		Item: {
@@ -34,5 +34,5 @@ function storeAccessToken(teamId, botAccessToken) {
 	});
 }
 
-module.exports.retrieveAccessToken = retrieveAccessToken;
-module.exports.storeAccessToken = storeAccessToken;
+module.exports.retrieve = retrieve;
+module.exports.store = store;
