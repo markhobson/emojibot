@@ -1,4 +1,3 @@
-const https = require('https');
 const querystring = require('querystring');
 const Tokens = require('./tokens.js');
 const Templates = require('./templates.js');
@@ -21,17 +20,16 @@ function install(event, context, callback) {
 }
 
 function authorized(event, context, callback) {
-	const code = event.queryStringParameters.code;
+	const arguments = {
+		client_id: client.id,
+		client_secret: client.secret,
+		code: event.queryStringParameters.code
+	};
 	
-	https.get(`https://slack.com/api/oauth.access?client_id=${client.id}&client_secret=${client.secret}&code=${code}`, response => {
-		let body = '';
-		response.on('data', chunk => body += chunk);
-		response.on('end', () => {
-			const jsonBody = JSON.parse(body);
-			Tokens.store(jsonBody.team_id, jsonBody.bot.bot_access_token)
-				.catch(error => console.log(error));
-		});
-	});
+	new WebClient().oauth.access(arguments)
+		.then(result => Tokens.store(result.team_id, result.bot.bot_access_token)
+			.catch(error => console.log(error))
+		);
 	
 	callback(null, {
 		statusCode: 200,
