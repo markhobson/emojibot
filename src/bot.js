@@ -25,7 +25,7 @@ function process(event, web) {
 }
 
 function explain(text, emoji) {
-	let name = toName(emoji);
+	const name = toName(emoji);
 
 	if (!text || !name) {
 		return 'I don\'t understand.';
