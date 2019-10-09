@@ -45,6 +45,7 @@ function getPaths(text) {
 	const words = text
 		.replace(/http[^\s]*/, '')
 		.replace(/@[^\s]+/, '')
+		.replace(/:[^\s]+:/, '')
 		.match(/\w{2,}/g) || [];
 	
 	return words

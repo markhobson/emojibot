@@ -124,6 +124,13 @@ describe('Bot', () => {
 			expect(web.reactions.add).not.toHaveBeenCalled();
 		});
 		
+		it('should respond with message for emojis', () => {
+			Bot.process({text: ':pig:', channel}, web);
+			
+			expect(web.chat.postMessage).toHaveBeenCalledWith({channel, text: 'I have nothing.'});
+			expect(web.reactions.add).not.toHaveBeenCalled();
+		});
+		
 		it('should respond with message when no matches', () => {
 			Bot.process({text: 'foo', channel}, web);
 			
