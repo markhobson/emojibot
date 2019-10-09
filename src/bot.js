@@ -42,11 +42,18 @@ function explain(text, emoji) {
 }
 
 function getPaths(text) {
+	const patterns = {
+		hyperlink: /http[^\s]*/,
+		mention: /@[^\s]+/,
+		emoji: /:[^\s]+:/,
+		word: /\w{2,}/g
+	};
+	
 	const words = text
-		.replace(/http[^\s]*/, '')
-		.replace(/@[^\s]+/, '')
-		.replace(/:[^\s]+:/, '')
-		.match(/\w{2,}/g) || [];
+		.replace(patterns.hyperlink, '')
+		.replace(patterns.mention, '')
+		.replace(patterns.emoji, '')
+		.match(patterns.word) || [];
 	
 	return words
 		.map(word => ({in: word, out: word.toLowerCase()}))
