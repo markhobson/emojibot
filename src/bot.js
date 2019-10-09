@@ -55,12 +55,21 @@ function getPaths(text) {
 		.replace(patterns.emoji, '')
 		.match(patterns.word) || [];
 	
+	const toPath = word => ({in: word, out: word});
+	const mapPath = f => path => ({...path, out: f(path.out)});
+	const toLowerCase = mapPath(out => out.toLowerCase());
+	const notStopword = path => !stopwords.has(path.out);
+	const toSingular = mapPath(out => pluralize.singular(out));
+	const hasEmoji = path => emoji.has(path.out);
+	const toEmoji = mapPath(out => emoji.get(out));
+	
 	return words
-		.map(word => ({in: word, out: word.toLowerCase()}))
-		.filter(path => !stopwords.has(path.out))
-		.map(path => ({...path, out: pluralize.singular(path.out)}))
-		.filter(path => emoji.has(path.out))
-		.map(path => ({...path, out: emoji.get(path.out)}));
+		.map(toPath)
+		.map(toLowerCase)
+		.filter(notStopword)
+		.map(toSingular)
+		.filter(hasEmoji)
+		.map(toEmoji);
 }
 
 const isBotMessage = event => event.subtype === 'bot_message';
