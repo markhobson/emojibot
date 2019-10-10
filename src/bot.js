@@ -60,18 +60,16 @@ function getPaths(text) {
 }
 
 function getWords(text) {
-	const patterns = {
-		hyperlink: /http[^\s]*/,
-		mention: /@[^\s]+/,
-		emoji: /:[^\s]+:/,
-		word: /\w{2,}/g
-	};
+	const hyperlink = /http[^\s]*/;
+	const mention = /@[^\s]+/;
+	const emoji = /:[^\s]+:/;
+	const word = /\w{2,}/g;
 	
 	return text
-		.replace(patterns.hyperlink, '')
-		.replace(patterns.mention, '')
-		.replace(patterns.emoji, '')
-		.match(patterns.word) || [];
+		.replace(hyperlink, '')
+		.replace(mention, '')
+		.replace(emoji, '')
+		.match(word) || [];
 }
 
 const isBotMessage = event => event.subtype === 'bot_message';
