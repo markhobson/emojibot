@@ -32,7 +32,7 @@ function explain(text, emoji) {
 	}
 	
 	const paths = getPaths(text)
-		.filter(path => contains(path.out, name));
+		.filter(path => path.out.includes(name));
 	
 	const path = randomElement(paths);
 	
@@ -81,8 +81,6 @@ const isDirectMessage = event => event.channel.startsWith('D');
 const toName = emoji => (/:(.*):/.exec(emoji) || [])[1];
 
 const toEmoji = name => `:${name}:`;
-
-const contains = (array, element) => array.indexOf(element) !== -1;
 
 const randomElement = array => array[Math.floor(Math.random() * array.length)];
 
