@@ -42,19 +42,6 @@ function explain(text, emoji) {
 }
 
 function getPaths(text) {
-	const patterns = {
-		hyperlink: /http[^\s]*/,
-		mention: /@[^\s]+/,
-		emoji: /:[^\s]+:/,
-		word: /\w{2,}/g
-	};
-	
-	const words = text
-		.replace(patterns.hyperlink, '')
-		.replace(patterns.mention, '')
-		.replace(patterns.emoji, '')
-		.match(patterns.word) || [];
-	
 	const toPath = word => ({in: word, out: word});
 	const mapPath = f => path => ({...path, out: f(path.out)});
 	const toLowerCase = mapPath(out => out.toLowerCase());
@@ -63,13 +50,28 @@ function getPaths(text) {
 	const hasEmoji = path => emoji.has(path.out);
 	const toEmoji = mapPath(out => emoji.get(out));
 	
-	return words
+	return getWords(text)
 		.map(toPath)
 		.map(toLowerCase)
 		.filter(notStopword)
 		.map(toSingular)
 		.filter(hasEmoji)
 		.map(toEmoji);
+}
+
+function getWords(text) {
+	const patterns = {
+		hyperlink: /http[^\s]*/,
+		mention: /@[^\s]+/,
+		emoji: /:[^\s]+:/,
+		word: /\w{2,}/g
+	};
+	
+	return text
+		.replace(patterns.hyperlink, '')
+		.replace(patterns.mention, '')
+		.replace(patterns.emoji, '')
+		.match(patterns.word) || [];
 }
 
 const isBotMessage = event => event.subtype === 'bot_message';
