@@ -98,4 +98,4 @@ function explain(event, context, callback) {
 module.exports.install = install;
 module.exports.authorized = authorized;
 module.exports.event = event;
-module.exports.explain  = explain;
+module.exports.explain = explain;
