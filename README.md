@@ -6,31 +6,34 @@ Learning AWS Lambda on Node.js.
 
 1. [Create an AWS account](https://aws.amazon.com/free/) if haven't got one already
 
-1. [Install Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [configure your AWS credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/)
+1. [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configure your AWS credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/)
+1. [Install AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
-1. [Create your Slack app](https://api.slack.com/slack-apps#create-app) and configure its credentials by creating a `local.yml` file:
+1. [Create your Slack app](https://api.slack.com/slack-apps#create-app) and configure its credentials by creating `.env` and `.env.prod` files:
 
 	```
 	# Local variables -- DO NOT COMMIT!
+	.env
+	    CLIENT_ID="<Your Dev Slack App Client ID>"
+	    CLIENT_SECRET="<Your Dev Slack App Client Secret>"
 	
-	dev:
-	  slack:
-	    clientId: "<Your Dev Slack App Client ID>"
-	    clientSecret: <Your Dev Slack App Client Secret>
-	
-	production:
-	  slack:
-	    clientId: "<Your Production Slack App Client ID>"
-	    clientSecret: <Your Production Slack App Client Secret>
+	.env.prod
+	    CLIENT_ID="<Your Dev Slack App Client ID>"
+	    CLIENT_SECRET="<Your Dev Slack App Client Secret>"
 	```
 
-	Note that the client id must be quoted otherwise it is interpreted as a number. Do not commit this file. It is already Git ignored.
+ 	Do not commit these file. It is already Git ignored.
+
+1. Create an S3 bucket to store the lambda code
+	```
+	aws s3 mb $S3_BUCKET_NAME
+	```
 
 1. Deploy the server to AWS Lambda:
 
 	```
 	npm install
-	serverless deploy
+	./scripts/deploy.sh dev|prod $S3_BUCKET_NAME
 	```
 
 	Note that you'll be charged for these services until they are [removed](#removing).
@@ -78,6 +81,16 @@ npm run generate
 To run the unit tests:
 
 ```
+npm run test:unit
+```
+
+To run the api tests:
+```
+npm run test:api
+```
+
+To run both:
+```
 npm test
 ```
 
@@ -86,7 +99,7 @@ npm test
 To undeploy the server from AWS:
 
 ```
-serverless remove
+aws cloudformation delete-stack --stack-name emojibot-dev|prod
 ```
 
 ## See also

@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for emojibot
+
+Parameters:
+  ClientID:
+    Type: String
+  ClientSecret:
+    Type: String
+    NoEcho: true
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    Timeout: 5
+    Environment:
+      Variables:
+        CLIENT_ID: !Ref ClientID
+        CLIENT_SECRET: !Ref ClientSecret
+        ACCESS_TOKEN_TABLE_NAME: !Sub "emojibot-${Stage}-accessTokenTable"
+
+Resources:
+  InstallFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "emojibot-${Stage}-install-function"
+      CodeUri: src
+      Handler: handler.install
+      Events:
+        Install:
+          Type: Api
+          Properties:
+            Path: /install
+            RestApiId: !Ref FunctionApi
+            Method: get
+
+  AuthorizedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "emojibot-${Stage}-authorized-function"
+      CodeUri: src
+      Handler: handler.authorized
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "emojibot-${Stage}-accessTokenTable"
+      Events:
+        Authorized:
+          Type: Api
+          Properties:
+            Path: /authorized
+            RestApiId: !Ref FunctionApi
+            Method: get
+
+  EventFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "emojibot-${Stage}-event-function"
+      CodeUri: src
+      Handler: handler.event
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "emojibot-${Stage}-accessTokenTable"
+      Events:
+        Event:
+          Type: Api
+          Properties:
+            Path: /event
+            RestApiId: !Ref FunctionApi
+            Method: post
+
+  ExplainFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "emojibot-${Stage}-explain-function"
+      CodeUri: src
+      Handler: handler.explain
+      Events:
+        Install:
+          Type: Api
+          Properties:
+            Path: /explain
+            RestApiId: !Ref FunctionApi
+            Method: post
+
+  FunctionApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Stage
+
+  AccessTokenTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "emojibot-${Stage}-accessTokenTable"
+      AttributeDefinitions:
+        - AttributeName: teamId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: teamId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+

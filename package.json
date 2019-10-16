@@ -1,21 +1,24 @@
 {
-  "name": "emojibot",
+  "name": "emojibot-parent",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
+  "repository": "https://github.com/markhobson/emojibot",
   "scripts": {
-    "generate": "node resources/generate.js",
-    "test": "jasmine"
+    "start": "sam local start-api",
+    "install": "(cd src && npm install)",
+    "generate": "node ./resources/generate.js",
+    "test": "node_modules/.bin/jasmine",
+    "test:unit": "node_modules/.bin/jasmine spec/bot.spec.js",
+    "test:api": "node_modules/.bin/jasmine spec/api.spec.js"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@slack/web-api": "^5.2.0",
-    "aws-sdk": "^2.7.13",
-    "pluralize": "^3.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "cheerio": "^0.22.0",
-    "jasmine": "^2.5.2"
+    "jasmine": "^2.5.2",
+    "pluralize": "^8.0.0",
+    "request": "^2.88.0"
   }
 }

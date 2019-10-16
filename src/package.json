@@ -1,0 +1,15 @@
+{
+  "name": "emojibot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "repository": "https://github.com/markhobson/emojibot",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/web-api": "^5.2.0",
+    "aws-sdk": "^2.7.13",
+    "pluralize": "^3.1.0"
+  },
+  "devDependencies": {}
+}
