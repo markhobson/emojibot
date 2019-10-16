@@ -26,6 +26,6 @@ fi
 
 sam package --s3-bucket "$S3_BUCKET" --output-template-file packaged.yml
 sam deploy --stack-name "emojibot-$STAGE" \
-	--template-file packaged.yaml \
+	--template-file packaged.yml \
 	--parameter-overrides ClientID="$CLIENT_ID" ClientSecret="$CLIENT_SECRET" Stage="$STAGE" \
 	--capabilities CAPABILITY_IAM
