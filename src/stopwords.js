@@ -43,6 +43,7 @@ const additionalStopwords = [
 	'has',
 	'have',
 	'here',
+	'its',
 	'like',
 	'me',
 	'so',
