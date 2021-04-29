@@ -18,12 +18,14 @@ provider:
     CLIENT_ID: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientId}
     CLIENT_SECRET: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientSecret}
     ACCESS_TOKEN_TABLE_NAME: ${self:resources.Resources.accessTokenTable.Properties.TableName}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:*
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:*
 
 functions:
   install:
