@@ -30,19 +30,19 @@ functions:
   install:
     handler: src/handler.install
     events:
-      - http: GET install
+      - http: GET /install
   authorized:
     handler: src/handler.authorized
     events:
-      - http: GET authorized
+      - http: GET /authorized
   event:
     handler: src/handler.event
     events:
-      - http: POST event
+      - http: POST /event
   explain:
     handler: src/handler.explain
     events:
-      - http: POST explain
+      - http: POST /explain
 
 resources:
   Resources:
