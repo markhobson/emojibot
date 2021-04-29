@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@slack/web-api": "^5.2.0",
-    "aws-sdk": "^2.7.13",
+    "@slack/web-api": "^5.15.0",
+    "aws-sdk": "^2.896.0",
     "pluralize": "^3.1.0"
   },
   "devDependencies": {
