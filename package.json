@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markhobson/emojibot.git"
+  },
   "scripts": {
     "generate": "node resources/generate.js",
     "test": "jasmine"
