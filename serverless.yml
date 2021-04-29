@@ -1,9 +1,8 @@
 service: emojibot
 
 package:
-  exclude:
-    - "**"
-  include:
+  patterns:
+    - "!**"
     - node_modules/**
     - "!node_modules/aws-sdk/**"
     - "!node_modules/@types/**"
