@@ -14,7 +14,7 @@ provider:
   name: aws
   region: eu-west-1
   stage: dev
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   environment:
     CLIENT_ID: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientId}
     CLIENT_SECRET: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientSecret}
