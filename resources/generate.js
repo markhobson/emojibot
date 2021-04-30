@@ -46,11 +46,12 @@ function transform(map) {
 }
 
 function script(map) {
+	const uniqueArray = array => [...new Set(array)];
 	const sortedArray = array => Array.from(array).sort((a, b) => a.localeCompare(b));
 	const sortedMap = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
 
 	const stringToLiteral = s => `'${s}'`;
-	const arrayToLiteral = array => `[${sortedArray(array).map(stringToLiteral).join(',')}]`;
+	const arrayToLiteral = array => `[${sortedArray(uniqueArray(array)).map(stringToLiteral).join(',')}]`;
 	const entryToLiteral = ([property, value]) => `[${stringToLiteral(property)},${arrayToLiteral(value)}]`;
 	const mapToLiteral = map => `new Map([\n${sortedMap(map).map(entryToLiteral).join(',\n')}\n])`;
 
