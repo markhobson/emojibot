@@ -1,39 +1,24 @@
 // Generates src/emoji.js
 
-const https = require('https');
-const cheerio = require('cheerio');
+const emojilib = require('emojilib');
+const emojidata = require('emoji-datasource');
 const pluralize = require('pluralize');
 const fs = require('fs');
 
-// http://www.emoji-cheat-sheet.com after following redirects
-const inputUrl = 'https://www.webfx.com/tools/emoji-cheat-sheet/index.html';
 const outputFile = 'src/emoji.js';
 
-function httpsGet(url) {
-	return new Promise((resolve, reject) =>
-		https.get(url, response => {
-			if (response.statusCode !== 200) {
-				reject(new Error(`Request failed: ${response.statusCode} ${response.statusMessage}`));
-				response.resume();
-			}
-			let body = '';
-			response.on('data', chunk => body += chunk);
-			response.on('end', () => resolve(body));
-		})
-	);
+function emojiMap() {
+	return emojidata
+		.map(emoji => [emoji.short_name, emojilib[parseUnified(emoji.unified)] || []])
+		.reduce((map, next) => map.set(next[0], next[1]), new Map());
 }
 
-function parse(html) {
-	const $ = cheerio.load(html);
-	const map = new Map();
+function parseUnified(unified) {
+	const codePoints = unified
+		.split('-')
+		.map(codePoint => parseInt(codePoint, 16));
 	
-	$('span.name').each((index, element) => {
-		const name = $(element).text();
-		const alternativeNames = ($(element).data('alternative-name') || '').split(/\s*,\s*/).filter(s => s !== '');
-		map.set(name, [...new Set(alternativeNames)]);
-	});
-
-	return map;
+	return String.fromCodePoint(...codePoints);
 }
 
 function transform(map) {
@@ -50,7 +35,7 @@ function script(map) {
 	const sortedArray = array => Array.from(array).sort((a, b) => a.localeCompare(b));
 	const sortedMap = map => Array.from(map).sort(([a], [b]) => a.localeCompare(b));
 
-	const stringToLiteral = s => `'${s}'`;
+	const stringToLiteral = s => `'${s.replace('\'', '\\\'')}'`;
 	const arrayToLiteral = array => `[${sortedArray(uniqueArray(array)).map(stringToLiteral).join(',')}]`;
 	const entryToLiteral = ([property, value]) => `[${stringToLiteral(property)},${arrayToLiteral(value)}]`;
 	const mapToLiteral = map => `new Map([\n${sortedMap(map).map(entryToLiteral).join(',\n')}\n])`;
@@ -69,7 +54,6 @@ function fsWriteFile(file, data) {
 	);
 }
 
-httpsGet(inputUrl)
-	.then(html => fsWriteFile(outputFile, script(transform(parse(html)))))
+fsWriteFile(outputFile, script(transform(emojiMap())))
 	.then(() => console.log(`Generated ${outputFile}`))
 	.catch(error => console.error(`Generation failed\n${error.stack}`));
