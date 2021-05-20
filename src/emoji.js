@@ -1,7 +1,6 @@
 // DO NOT EDIT! Built by: npm run generate
 
 module.exports = new Map([
-['',['yawning_face']],
 ['-_-',['expressionless']],
 ['-1',['-1']],
 [';)',['wink']],
