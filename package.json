@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@slack/web-api": "^6.1.0",
-    "aws-sdk": "^2.896.0",
+    "aws-sdk": "^2.910.0",
     "pluralize": "^3.1.0"
   },
   "devDependencies": {
