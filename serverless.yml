@@ -1,5 +1,7 @@
 service: emojibot
 
+useDotenv: true
+
 package:
   patterns:
     - "!**"
@@ -16,7 +18,7 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   environment:
-    BOT_ACCESS_TOKEN: ${file(local.yml):${opt:stage, self:provider.stage}.slack.botAccessToken}
+    BOT_ACCESS_TOKEN: ${env:BOT_ACCESS_TOKEN}
 
 functions:
   event:

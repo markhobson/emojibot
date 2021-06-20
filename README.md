@@ -50,21 +50,15 @@ Learning AWS Lambda on Node.js.
 	
 1. Configure the server credentials:
 
-	1. Create a `local.yml` file (do not commit this file, it is already Git ignored):
+	1. Create a `.env` file (do not commit this file, it is already Git ignored):
 
 		```
-		# Local variables -- DO NOT COMMIT!
+		# Environment variables -- DO NOT COMMIT!
 
-		dev:
-		  slack:
-		    botAccessToken: "<Your Dev Slack App Bot Access Token>"
-
-		production:
-		  slack:
-		    botAccessToken: "<Your Production Slack App Bot Access Token>"
+		BOT_ACCESS_TOKEN = <bot access token>
 		```
 	 
-	1. Replace `<Your Dev Slack App Bot Access Token>` with your copied bot user OAuth token
+	1. Replace `<bot access token>` with your copied bot user OAuth token
 	1. Save the file
 	1. Redeploy the server to update the environment variable:
 	
