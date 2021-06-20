@@ -68,7 +68,7 @@ A Slack bot that joins the conversation with emojis.
 
 ## Updating emojis
 
-The bot works by using a map of words to emojis. This map is derived from [Emoji cheat sheet](http://www.emoji-cheat-sheet.com) and stored in [emoji.js](src/emoji.js). To regenerate it:
+The bot works by using a map of words to emojis. This map is derived from [emoji-data](https://github.com/iamcal/emoji-data) and [emojilib](https://github.com/muan/emojilib) and stored in [emoji.js](src/emoji.js). To regenerate it:
 
 ```
 npm run generate
