@@ -1,6 +1,6 @@
 # Emojibot
 
-Learning AWS Lambda on Node.js.
+A Slack bot that joins the conversation with emojis.
 
 ## Getting started
 
