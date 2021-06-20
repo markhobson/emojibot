@@ -21,7 +21,7 @@
   "devDependencies": {
     "emoji-datasource": "^6.1.1",
     "emojilib": "^3.0.2",
-    "jasmine": "^2.5.2"
+    "jasmine": "^3.7.0"
   },
   "engines": {
     "node": "^14",
