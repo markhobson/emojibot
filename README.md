@@ -92,4 +92,4 @@ serverless remove
 
 ## See also
 
-* Blog: [Building a serverless chatbot on AWS Lambda](https://www.blackpepper.co.uk/blog/creating-a-serverless-slack-bot-on-aws-lambda)
+* Blog: [Building a serverless chatbot on AWS Lambda](https://www.markh.me/2017/01/25/building-a-serverless-chatbot-on-aws-lambda.html)
