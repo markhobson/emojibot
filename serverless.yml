@@ -16,27 +16,9 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   environment:
-    CLIENT_ID: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientId}
-    CLIENT_SECRET: ${file(local.yml):${opt:stage, self:provider.stage}.slack.clientSecret}
-    ACCESS_TOKEN_TABLE_NAME: ${self:resources.Resources.accessTokenTable.Properties.TableName}
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-          Resource: arn:aws:dynamodb:${self:provider.region}:*:*
+    BOT_ACCESS_TOKEN: ${file(local.yml):${opt:stage, self:provider.stage}.slack.botAccessToken}
 
 functions:
-  install:
-    handler: src/handler.install
-    events:
-      - http: GET /install
-  authorized:
-    handler: src/handler.authorized
-    events:
-      - http: GET /authorized
   event:
     handler: src/handler.event
     events:
@@ -45,19 +27,3 @@ functions:
     handler: src/handler.explain
     events:
       - http: POST /explain
-
-resources:
-  Resources:
-    accessTokenTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:service}-${opt:stage, self:provider.stage}-accessTokenTable
-        AttributeDefinitions:
-          - AttributeName: teamId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: teamId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1

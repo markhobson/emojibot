@@ -72,7 +72,7 @@ function getWords(text) {
 		.match(word) || [];
 }
 
-const isBotMessage = event => event.subtype === 'bot_message';
+const isBotMessage = event => !!event.bot_id;
 
 const isSlashCommand = event => event.text.startsWith('/');
 

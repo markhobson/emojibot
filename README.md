@@ -8,24 +8,6 @@ Learning AWS Lambda on Node.js.
 
 1. [Install Serverless](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [configure your AWS credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/)
 
-1. [Create your Slack app](https://api.slack.com/slack-apps#create-app) and configure its credentials by creating a `local.yml` file:
-
-	```
-	# Local variables -- DO NOT COMMIT!
-	
-	dev:
-	  slack:
-	    clientId: "<Your Dev Slack App Client ID>"
-	    clientSecret: <Your Dev Slack App Client Secret>
-	
-	production:
-	  slack:
-	    clientId: "<Your Production Slack App Client ID>"
-	    clientSecret: <Your Production Slack App Client Secret>
-	```
-
-	Note that the client id must be quoted otherwise it is interpreted as a number. Do not commit this file. It is already Git ignored.
-
 1. Deploy the server to AWS Lambda:
 
 	```
@@ -39,31 +21,56 @@ Learning AWS Lambda on Node.js.
 
 	```
 	endpoints:
-	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/install
-	  GET - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/authorized
 	  POST - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/event
 	  POST - https://ab12cd34ef.execute-api.eu-west-1.amazonaws.com/dev/explain
 	```
-	
-1. Go to your [Slack app](https://api.slack.com/apps) settings and update them to point to your server:
-	
-	1. Select 'Slash Commands' and add the following command:
-	    * Command: `/explain`
-	    * Request URL: paste the `explain` endpoint
-	    * Short Description: `Explains an emoji`
-	    * Usage Hint: `[input text] [received emoji]`
-	1. Select 'OAuth & Permissions' and under 'Redirect URLs' add the `authorized` endpoint
-	1. Select 'Event Subscriptions' and:
-		1. Turn on 'Enable Events'
-		1. In the 'Request URL' box paste the `event` endpoint
-		1. Under 'Subscribe to Bot Events' add bot user events for:
-			* `message.channels`
-			* `message.groups`
-			* `message.im`
-			* `message.mpim`
-	1. Select 'Bot Users' and add a bot user
 
-1. Finally, install your Slack app by visiting your `install` endpoint and clicking the 'Add to Slack' button
+1. Update the Slack app manifest for your server:
+
+	1. Open `manifest.yml`
+	1. Replace `<event endpoint>` with the `event` endpoint
+	1. Replace `<explain endpoint>` with the `explain` endpoint
+	1. Copy the contents of this file to your clipboard (no need to save these changes)
+
+1. Create your Slack app from the manifest:
+
+	1. [Create a Slack app](https://api.slack.com/apps/new)
+	1. Select 'From an app manifest'
+	1. Select your workspace and click 'Next'
+	1. Paste in the manifest from your clipboard and click 'Next'
+	1. Click 'Create'
+
+1. Install the Slack app to your workspace:
+
+	1. Under 'Basic Information / Install your app' click 'Install to Workspace'
+	1. Click 'Allow' to authorize the permissions
+	1. Under 'Basic Information / Display Information' click '+ Add App Icon'
+	1. Select and upload `resources/emojibot.png`
+	1. Select 'OAuth & Permissions' and under 'Bot User OAuth Token' click 'Copy'
+	
+1. Configure the server credentials:
+
+	1. Create a `local.yml` file (do not commit this file, it is already Git ignored):
+
+		```
+		# Local variables -- DO NOT COMMIT!
+
+		dev:
+		  slack:
+		    botAccessToken: "<Your Dev Slack App Bot Access Token>"
+
+		production:
+		  slack:
+		    botAccessToken: "<Your Production Slack App Bot Access Token>"
+		```
+	 
+	1. Replace `<Your Dev Slack App Bot Access Token>` with your copied bot user OAuth token
+	1. Save the file
+	1. Redeploy the server to update the environment variable:
+	
+		```
+		serverless deploy
+		```
 
 ## Updating emojis
 

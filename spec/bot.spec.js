@@ -139,7 +139,7 @@ describe('Bot', () => {
 		});
 		
 		it('should not respond to bot message', () => {
-			Bot.process({text: 'foo', channel, subtype: 'bot_message'}, web);
+			Bot.process({text: 'foo', channel, bot_id: 'B0123456789'}, web);
 			
 			expect(web.chat.postMessage).not.toHaveBeenCalled();
 			expect(web.reactions.add).not.toHaveBeenCalled();

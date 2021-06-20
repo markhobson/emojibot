@@ -1,0 +1,35 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: Emojibot
+  description: This bot's first language is emoji.
+settings:
+  event_subscriptions:
+    request_url: <event endpoint>
+    bot_events:
+      - message.channels
+      - message.groups
+      - message.im
+      - message.mpim
+features:
+  app_home:
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: Emojibot
+  slash_commands:
+    - command: /explain
+      description: Explains an emoji
+      usage_hint: "[input text] [received emoji]"
+      url: <explain endpoint>
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - channels:history
+      - chat:write
+      - groups:history
+      - im:history
+      - mpim:history
+      - reactions:write
