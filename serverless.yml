@@ -16,6 +16,7 @@ provider:
   region: eu-west-1
   stage: dev
   runtime: nodejs14.x
+  memorySize: 128
   lambdaHashingVersion: 20201221
   environment:
     BOT_ACCESS_TOKEN: ${env:BOT_ACCESS_TOKEN}
